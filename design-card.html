@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Design-Card · Kaffee-Genuss.net</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --espresso:#3B2417; --bohne:#6F4E37; --crema:#C8A26A;
+    --signal:#E08A2B; --signal-700:#C2731C;
+    --milch:#F7F3EC; --sahne:#FFFFFF;
+    --roest-100:#EDE6DB; --roest-300:#C9BBA7; --roest-700:#5A4B3A;
+    --success:#4F7A3F; --error:#B23A2E;
+    --radius-md:2px; --radius-lg:3px; --radius-pill:2px;
+    --shadow-sm:0 1px 2px rgba(59,36,23,.06);
+    --shadow-md:0 6px 20px rgba(59,36,23,.10);
+    --shadow-lg:0 16px 48px rgba(59,36,23,.14);
+    --font-head:"Fraunces",Georgia,serif;
+    --font-body:"Inter",system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:var(--font-body); color:var(--espresso);
+    background:
+      radial-gradient(900px 500px at 100% -10%, rgba(200,162,106,.18), transparent 60%),
+      radial-gradient(700px 400px at -10% 110%, rgba(111,78,55,.12), transparent 55%),
+      var(--milch);
+    min-height:100vh; padding:48px 20px; line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  .card{
+    max-width:1100px; margin:0 auto; background:var(--sahne);
+    border:1px solid var(--roest-100); border-radius:var(--radius-lg);
+    box-shadow:var(--shadow-lg); overflow:hidden;
+  }
+  /* Header */
+  .head{
+    background:
+      radial-gradient(600px 300px at 90% -40%, rgba(224,138,43,.30), transparent 60%),
+      linear-gradient(135deg,var(--espresso),#2a1810);
+    color:var(--milch); padding:40px 44px 36px; position:relative;
+  }
+  .head::after{
+    content:""; position:absolute; inset:0;
+    background-image:radial-gradient(rgba(255,255,255,.04) 1px,transparent 1px);
+    background-size:14px 14px; pointer-events:none;
+  }
+  .eyebrow{
+    font-size:.75rem; letter-spacing:.22em; text-transform:uppercase;
+    color:var(--crema); font-weight:600; margin-bottom:12px;
+  }
+  .head h1{
+    font-family:var(--font-head); font-weight:600; font-size:2.4rem;
+    line-height:1.1; letter-spacing:-.01em;
+  }
+  .head p{color:rgba(247,243,236,.78); margin-top:10px; max-width:60ch; font-size:1.02rem}
+  .head .meta{margin-top:18px; display:flex; gap:10px; flex-wrap:wrap; position:relative; z-index:1}
+  .pill{
+    font-size:.78rem; font-weight:500; padding:6px 14px; border-radius:var(--radius-pill);
+    background:rgba(247,243,236,.10); border:1px solid rgba(200,162,106,.4); color:var(--milch);
+  }
+  /* Body grid */
+  .body{padding:40px 44px 48px; display:grid; gap:36px}
+  .section-title{
+    font-family:var(--font-head); font-size:1.1rem; font-weight:600; color:var(--bohne);
+    margin-bottom:16px; display:flex; align-items:center; gap:10px;
+  }
+  .section-title::before{
+    content:""; width:22px; height:3px; border-radius:2px; background:var(--signal);
+  }
+  /* Palette */
+  .swatches{display:grid; grid-template-columns:repeat(auto-fill,minmax(120px,1fr)); gap:12px}
+  .sw{border-radius:var(--radius-md); overflow:hidden; border:1px solid var(--roest-100); box-shadow:var(--shadow-sm)}
+  .sw .chip{height:64px}
+  .sw .info{padding:8px 10px; font-size:.74rem; background:var(--sahne)}
+  .sw .info b{display:block; font-size:.8rem; color:var(--espresso)}
+  .sw .info span{color:var(--roest-300); font-family:ui-monospace,monospace}
+  /* Typography */
+  .type-row{display:grid; gap:14px; border:1px solid var(--roest-100); border-radius:var(--radius-md); padding:24px; background:var(--milch)}
+  .t-h1{font-family:var(--font-head); font-weight:600; font-size:2.6rem; line-height:1.1; letter-spacing:-.01em}
+  .t-h2{font-family:var(--font-head); font-weight:600; font-size:1.7rem}
+  .t-lead{font-size:1.15rem; color:var(--roest-700)}
+  .t-body{font-size:1rem; color:var(--roest-700); max-width:64ch}
+  .t-label{font-size:.8rem; font-weight:500; letter-spacing:.04em; text-transform:uppercase; color:var(--bohne)}
+  .t-tag{font-family:ui-monospace,monospace; font-size:.72rem; color:var(--roest-300)}
+  /* Buttons */
+  .btn-row{display:flex; gap:14px; flex-wrap:wrap; align-items:center}
+  .btn{
+    font-family:var(--font-body); font-weight:600; font-size:.95rem; cursor:pointer;
+    border-radius:var(--radius-pill); padding:13px 26px; border:0; transition:.18s ease;
+  }
+  .btn-primary{background:var(--signal); color:#fff; box-shadow:var(--shadow-sm)}
+  .btn-primary:hover{background:var(--signal-700); transform:translateY(-1px); box-shadow:var(--shadow-md)}
+  .btn-secondary{background:transparent; color:var(--bohne); border:1.5px solid var(--bohne)}
+  .btn-secondary:hover{background:var(--roest-100)}
+  .btn-ghost{background:transparent; color:var(--bohne); padding:13px 8px}
+  .btn-ghost:hover{text-decoration:underline}
+  /* Cards + Wizard split */
+  .split{display:grid; grid-template-columns:1fr 1fr; gap:28px}
+  @media(max-width:760px){.split{grid-template-columns:1fr}}
+  .product-card{
+    background:var(--sahne); border:1px solid var(--roest-100); border-radius:var(--radius-md);
+    overflow:hidden; box-shadow:var(--shadow-sm); transition:.2s ease; cursor:pointer;
+  }
+  .product-card:hover{box-shadow:var(--shadow-md); border-color:var(--crema); transform:translateY(-2px)}
+  .product-card .img{
+    height:140px;
+    background:
+      radial-gradient(120px 80px at 70% 30%, rgba(224,138,43,.35),transparent 70%),
+      linear-gradient(135deg,#6F4E37,#3B2417);
+    display:flex; align-items:flex-end; padding:14px;
+  }
+  .product-card .img span{color:var(--crema); font-size:.72rem; letter-spacing:.12em; text-transform:uppercase}
+  .product-card .pc-body{padding:16px}
+  .product-card h3{font-family:var(--font-head); font-size:1.15rem; font-weight:600}
+  .product-card p{font-size:.88rem; color:var(--roest-700); margin-top:6px}
+  .product-card .arrow{color:var(--signal); font-weight:600; font-size:.85rem; margin-top:12px; display:inline-block}
+  /* Wizard */
+  .wizard{
+    background:var(--sahne); border:1px solid var(--roest-100); border-radius:var(--radius-lg);
+    box-shadow:var(--shadow-lg); padding:24px;
+  }
+  .progress{display:flex; gap:6px; margin-bottom:20px}
+  .progress i{flex:1; height:5px; border-radius:3px; background:var(--roest-100)}
+  .progress i.on{background:var(--signal)}
+  .wizard .step-no{font-size:.74rem; font-weight:600; color:var(--signal); letter-spacing:.08em; text-transform:uppercase}
+  .wizard h4{font-family:var(--font-head); font-size:1.25rem; font-weight:600; margin:6px 0 16px}
+  .choices{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+  .choice{
+    padding:14px; text-align:center; border-radius:var(--radius-md);
+    border:1.5px solid var(--roest-100); background:var(--milch); font-size:.9rem;
+    font-weight:500; cursor:pointer; transition:.15s ease;
+  }
+  .choice:hover{border-color:var(--crema)}
+  .choice.sel{background:var(--signal); color:#fff; border-color:var(--signal)}
+  .wizard .foot{display:flex; justify-content:space-between; align-items:center; margin-top:20px}
+  .wizard .micro{font-size:.78rem; color:var(--roest-300)}
+  /* Chips/USP */
+  .usp{display:flex; gap:10px; flex-wrap:wrap}
+  .usp .badge{
+    display:inline-flex; align-items:center; gap:8px; padding:9px 16px; border-radius:var(--radius-pill);
+    background:var(--milch); border:1px solid var(--roest-100); font-size:.85rem; font-weight:500; color:var(--bohne);
+  }
+  .usp .badge::before{content:""; width:7px; height:7px; border-radius:50%; background:var(--success)}
+  .foot-note{padding:22px 44px; background:var(--espresso); color:rgba(247,243,236,.7); font-size:.8rem; display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px}
+  .foot-note b{color:var(--crema)}
+</style>
+</head>
+<body>
+<div class="card">
+
+  <div class="head">
+    <div class="eyebrow">Relaunch · Design-Card · v2 kantig</div>
+    <h1>Kaffee-Genuss.net</h1>
+    <p>Kaffeevollautomaten für Büro &amp; Gastro — Key Visuals für den Astro-Relaunch. Seriös-warm, leichtgewichtig, konversionsorientiert.</p>
+    <div class="meta">
+      <span class="pill">Astro 6 SSG</span>
+      <span class="pill">Lead-Fokus</span>
+      <span class="pill">DACH B2B</span>
+      <span class="pill">WCAG AA</span>
+    </div>
+  </div>
+
+  <div class="body">
+
+    <!-- PALETTE -->
+    <section>
+      <div class="section-title">Farb-Tokens</div>
+      <div class="swatches">
+        <div class="sw"><div class="chip" style="background:#3B2417"></div><div class="info"><b>Espresso</b><span>#3B2417</span></div></div>
+        <div class="sw"><div class="chip" style="background:#6F4E37"></div><div class="info"><b>Bohne</b><span>#6F4E37</span></div></div>
+        <div class="sw"><div class="chip" style="background:#C8A26A"></div><div class="info"><b>Crema</b><span>#C8A26A</span></div></div>
+        <div class="sw"><div class="chip" style="background:#E08A2B"></div><div class="info"><b>Signal · CTA</b><span>#E08A2B</span></div></div>
+        <div class="sw"><div class="chip" style="background:#F7F3EC"></div><div class="info"><b>Milch · BG</b><span>#F7F3EC</span></div></div>
+        <div class="sw"><div class="chip" style="background:#EDE6DB"></div><div class="info"><b>Röst-100</b><span>#EDE6DB</span></div></div>
+        <div class="sw"><div class="chip" style="background:#5A4B3A"></div><div class="info"><b>Röst-700</b><span>#5A4B3A</span></div></div>
+        <div class="sw"><div class="chip" style="background:#4F7A3F"></div><div class="info"><b>Success</b><span>#4F7A3F</span></div></div>
+      </div>
+    </section>
+
+    <!-- TYPO -->
+    <section>
+      <div class="section-title">Typografie · Fraunces + Inter</div>
+      <div class="type-row">
+        <div class="t-h1">Angebote vergleichen</div>
+        <div class="t-tag">H1 · Fraunces 600 · clamp 2→3.25rem</div>
+        <div class="t-h2">Kaffeevollautomaten für jedes Büro</div>
+        <div class="t-tag">H2 · Fraunces 600</div>
+        <div class="t-lead">Frisch gebrühter Kaffee steigert Moral und Produktivität — kostenlos &amp; unverbindlich vergleichen.</div>
+        <div class="t-tag">Lead · Inter 400 · 1.15rem</div>
+        <div class="t-body">Moderne Kaffeevollautomaten bieten eine große Auswahl an Spezialitäten und eignen sich besonders für Büro, Gastronomie und Hotellerie. Mit dem Konfigurator finden Sie in unter 60 Sekunden das passende Gerät.</div>
+        <div class="t-tag">Body · Inter 400 · max 64ch</div>
+        <div class="t-label">Einsatzort auswählen</div>
+        <div class="t-tag">Label · Inter 500 · uppercase</div>
+      </div>
+    </section>
+
+    <!-- BUTTONS + USP -->
+    <section>
+      <div class="section-title">Buttons &amp; USP-Badges</div>
+      <div class="btn-row" style="margin-bottom:18px">
+        <button class="btn btn-primary">Jetzt Angebote vergleichen</button>
+        <button class="btn btn-secondary">Beratung anfragen</button>
+        <button class="btn btn-ghost">Mehr erfahren →</button>
+      </div>
+      <div class="usp">
+        <span class="badge">kostenlos</span>
+        <span class="badge">unverbindlich</span>
+        <span class="badge">bis zu 3 Angebote</span>
+        <span class="badge">DE · AT · CH</span>
+      </div>
+    </section>
+
+    <!-- CARD + WIZARD -->
+    <section>
+      <div class="section-title">Komponenten · Card &amp; Konfigurator</div>
+      <div class="split">
+
+        <div class="product-card">
+          <div class="img"><span>Hersteller</span></div>
+          <div class="pc-body">
+            <h3>Jura</h3>
+            <p>Premium-Vollautomaten für Büro und Gastronomie — leise, langlebig, vielseitig.</p>
+            <span class="arrow">Modelle ansehen →</span>
+          </div>
+        </div>
+
+        <div class="wizard">
+          <div class="progress"><i class="on"></i><i class="on"></i><i></i><i></i><i></i><i></i><i></i></div>
+          <div class="step-no">Schritt 2 / 7</div>
+          <h4>Wo soll der Kaffeeautomat genutzt werden?</h4>
+          <div class="choices">
+            <div class="choice">Kleingastronomie</div>
+            <div class="choice sel">Büro / Dienstleister</div>
+            <div class="choice">Gastro / Hotellerie</div>
+            <div class="choice">Privat</div>
+          </div>
+          <div class="foot">
+            <span class="micro">← zurück</span>
+            <span class="micro">in 60 Sekunden · kostenlos</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </div>
+
+  <div class="foot-note">
+    <span><b>Fonts:</b> Fraunces (Display) · Inter (Body)</span>
+    <span><b>Radius:</b> 12 / 20 / pill &nbsp;·&nbsp; <b>Shadow:</b> sm / md / lg</span>
+    <span><b>Stack:</b> Astro SSG · Preact Islands · Tailwind</span>
+  </div>
+
+</div>
+</body>
+</html>
