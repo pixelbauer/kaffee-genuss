@@ -7,7 +7,7 @@
 
 ## Projekt in einem Satz
 
-Relaunch der Lead-Gen-Seite für Kaffeevollautomaten (Büro & Gastro, DACH) von WordPress auf **Astro 6 SSG** — leichtgewichtig, statisch, mit automatisiertem Lead-/Newsletter-Flow über die bestehende **RGM/GreenArrow-API**.
+Relaunch der Lead-Gen-Seite für Kaffeevollautomaten (Büro & Gastro, DACH) von WordPress auf **Astro 6 SSG** — leichtgewichtig, statisch, mit automatisiertem Lead-Flow (Proxy → **Rhein-Digital-API**), direkter Newsletter-Anbindung (**Rhein-Digital**, Browser-direkt) und Kontaktformular (Proxy → **RGM/GreenArrow**).
 
 ## Stack
 
@@ -30,7 +30,8 @@ Relaunch der Lead-Gen-Seite für Kaffeevollautomaten (Büro & Gastro, DACH) von 
 
 - Content-Seiten: **0 JS**. Islands sparsam und nur wo Interaktion nötig ist.
 - Konfigurator ist das Herzstück (7 Schritte, siehe PLAN.md §4 / DESIGN.md §6) → State in-memory, kein localStorage.
-- Lead-/Newsletter-Payload NIE im Client mappen — immer über den Proxy-Endpoint.
+- **Provider-Aufteilung:** Lead läuft über den Proxy `/api/lead` → Rhein-Digital (`kaffeemaschinen`, ohne DOI); Kontakt über `/api/kontakt` → RGM/GreenArrow. Newsletter läuft **direkt** aus dem Browser gegen `api.rhein-digital.de` (kein Proxy, kein Secret, Anti-Spoofing über Origin-Header), Config in `src/lib/newsletter.ts`.
+- Lead-/Kontakt-Payload NIE im Client mappen — immer über den jeweiligen Proxy-Endpoint. Beim Newsletter wird bewusst nur `{source_key, email}` direkt gesendet (kein Mapping sensibler Felder).
 - Bot-Schutz: Honeypot + Rate-Limit + serverseitige Validierung (Logik analog `hosting=true AND proxy=false`).
 - Consent vor Tracking: Consent Mode v2 default `denied`, GTM/GA4 erst nach Zustimmung.
 

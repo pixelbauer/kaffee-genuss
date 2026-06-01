@@ -1,9 +1,13 @@
 # Beispiel für lokale Pages-Functions-Secrets (kopieren nach .dev.vars, NICHT committen).
-# Ohne diese Werte laufen die Functions im Stub-Modus (loggen statt senden).
 
-RGM_LEAD_URL=
-RGM_NEWSLETTER_URL=
-RGM_NEWSLETTER_CONFIRM_URL=
-RGM_API_KEY=
-RGM_NEWSLETTER_LIST_ID=
+# Lead-Proxy → Rhein-Digital (/api/lead). Optional: ohne Wert greift der dokumentierte
+# Default https://api.rhein-digital.de/lead/signup. Für lokale Tests auf Mock-URL setzen.
+RHEIN_LEAD_URL=
+
+# Kontaktformular (/api/kontakt) → RGM/GreenArrow. Ohne Werte läuft es im Stub-Modus.
 CONTACT_FORWARD_URL=
+RGM_LEAD_URL=
+RGM_API_KEY=
+
+# Hinweis: Der Newsletter läuft direkt aus dem Browser gegen api.rhein-digital.de
+# (kein Secret, kein Proxy) - siehe src/lib/newsletter.ts.

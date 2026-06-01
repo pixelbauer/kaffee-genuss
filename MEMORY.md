@@ -19,12 +19,15 @@ Build grün (35 Seiten), Typecheck 0 Fehler, Pages Functions ende-zu-ende getest
   + 13 Artikel (8 neue B2B-Spokes + 5 überarbeitete), FAQ, Kontakt, Impressum, Datenschutz, 404.
 - 7-Schritte-Konfigurator: Auto-Advance, Inline-Validierung, Honeypot + Zeit-Trap, dataLayer-Hooks,
   Danke-State; POST → `/functions/api/lead.ts`.
-- Pages Functions: lead, newsletter (DOI), newsletter-confirm (DOI-Bestätigung), kontakt (native
-  form, 0 JS). Bot-Schutz + serverseitige Validierung + KV-Rate-Limit + RGM-Forwarding (Stub-Modus
-  ohne Secrets, sauber getestet).
-- DOI-Strecke vollständig: Anmelde-Island (`Newsletter.tsx`) → `/api/newsletter` (RGM, DOI-Mail) →
-  Bestätigungsseite `/newsletter/bestaetigen/` (Island `NewsletterConfirm.tsx`, liest Token aus URL)
-  → `/api/newsletter-confirm` (RGM). Seite ist noindex + aus Sitemap gefiltert. dataLayer:
+- Pages Functions: lead (Proxy → Rhein-Digital), kontakt (native form, 0 JS → RGM/GreenArrow).
+  Bot-Schutz + serverseitige Validierung + KV-Rate-Limit.
+- Lead: Konfigurator → `/api/lead` mappt auf das Rhein-Digital-Schema (Quelle `kaffeemaschinen`,
+  ohne DOI) und reicht serverseitig an `api.rhein-digital.de/lead/signup` weiter. Origin/Referer des
+  Browsers werden durchgereicht (Anti-Spoofing-Check der API). Erfolg = `status: 1`.
+- Newsletter: direkte Browser-Anbindung an Rhein-Digital (kein Proxy, kein Secret). Anmelde-Island
+  `Newsletter.tsx` → POST `{source_key, email}` an `/newsletter/signup`; DOI-Bestätigung über
+  `/newsletter/bestaetigen/` (Island `NewsletterConfirm.tsx`) → GET `/newsletter/confirm/<hash>`.
+  Konfig zentral in `src/lib/newsletter.ts`. Seite noindex + aus Sitemap gefiltert. dataLayer:
   `newsletter_signup`, `newsletter_signup_confirmed`.
 - Consent Mode v2 (default denied), Consent-Banner + Re-Open via Footer, GTM nur bei `PUBLIC_GTM_ID`.
 - SEO: Sitemap, robots.txt, Canonicals, OG/Twitter, Schema (Organization/WebSite/Brand/BreadcrumbList/
@@ -36,7 +39,9 @@ Build grün (35 Seiten), Typecheck 0 Fehler, Pages Functions ende-zu-ende getest
   bewusst als Monogramm (Markenbezug, keine Stock-Wiederholung). Bildnachweis im Impressum.
 
 ### Env-Variablen (in Cloudflare Pages → Settings → Variables setzen)
-- `RGM_LEAD_URL`, `RGM_NEWSLETTER_URL`, `RGM_NEWSLETTER_CONFIRM_URL`, `RGM_API_KEY`, `RGM_NEWSLETTER_LIST_ID`, optional `CONTACT_FORWARD_URL`
+- Lead: optional `RHEIN_LEAD_URL` (Default = `https://api.rhein-digital.de/lead/signup`)
+- Kontakt: `CONTACT_FORWARD_URL` bzw. `RGM_LEAD_URL` + `RGM_API_KEY` (RGM/GreenArrow)
+- Newsletter: kein Secret nötig (direkte Anbindung, siehe `src/lib/newsletter.ts`)
 - optional KV-Binding `RATE_LIMIT` (Namespace) für IP-Rate-Limit
 - Build-Zeit: `PUBLIC_GTM_ID` (z. B. GTM-XXXXXX) — ohne ID kein Tracking/GTM
 

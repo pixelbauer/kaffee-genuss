@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'preact/hooks';
 import './NewsletterConfirm.css';
+import { newsletterConfirmUrl } from '@/lib/newsletter';
 
 /**
  * Double-Opt-In-Bestätigung: Ziel des Links aus der DOI-Mail.
- * Liest den Token aus der URL (?token= / ?h= / ?hash=), bestätigt über den
- * Proxy /api/newsletter-confirm (→ RGM) und rendert die distinkten Zustände.
+ * Liest den Hash aus der URL (?h= / ?hash= / ?token=) und löst ihn direkt über
+ * api.rhein-digital.de/newsletter/confirm/<hash> ein (analog Heimwerk).
  * dataLayer: newsletter_signup_confirmed.
  */
 type State = 'loading' | 'success' | 'already' | 'invalid' | 'error' | 'no-token';
@@ -90,18 +91,21 @@ export default function NewsletterConfirm() {
     let cancelled = false;
     (async () => {
       try {
-        const res = await fetch('/api/newsletter-confirm', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ token }),
+        const res = await fetch(newsletterConfirmUrl(token), {
+          method: 'GET',
+          headers: { Accept: 'application/json' },
         });
-        const data = (await res.json().catch(() => ({}))) as { ok?: boolean; alreadyConfirmed?: boolean };
+        const data = (await res.json().catch(() => ({}))) as {
+          status?: number;
+          msg?: string;
+          already_confirmed?: boolean;
+        };
         if (cancelled) return;
-        if (res.ok && data.ok) {
-          const already = !!data.alreadyConfirmed;
+        if (data.status === 1) {
+          const already = !!data.already_confirmed;
           setState(already ? 'already' : 'success');
           track('newsletter_signup_confirmed', { already_confirmed: already });
-        } else if (res.status === 422) {
+        } else if (data.msg === 'invalid hash' || res.status === 404 || res.status === 410) {
           setState('invalid');
         } else {
           setState('error');

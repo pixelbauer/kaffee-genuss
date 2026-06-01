@@ -1,10 +1,12 @@
 import { useRef, useState } from 'preact/hooks';
 import './Newsletter.css';
+import { newsletterSignupUrl, NEWSLETTER_API } from '@/lib/newsletter';
 
 /**
- * Newsletter-Anmeldung (Double-Opt-In über RGM).
- * E-Mail → POST /api/newsletter (Cloudflare Pages Function → RGM).
- * Honeypot + Consent-Checkbox. dataLayer: newsletter_signup.
+ * Newsletter-Anmeldung (Double-Opt-In, direkt gegen die Rhein-Digital-API).
+ * E-Mail → POST {source_key, email} an api.rhein-digital.de/newsletter/signup.
+ * Anbieter versendet die Bestätigungsmail; Ziel des Links ist /newsletter/bestaetigen/.
+ * Client-seitiger Honeypot + Consent-Checkbox. dataLayer: newsletter_signup.
  */
 function emailValid(v: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim());
@@ -31,24 +33,31 @@ export default function Newsletter({ variant = 'block' }: Props) {
     e.preventDefault();
     if (!emailValid(email)) { setError('Bitte gültige E-Mail angeben.'); return; }
     if (!consent) { setError('Bitte der Verarbeitung zustimmen.'); return; }
+    // Client-seitiger Honeypot: stiller Erfolg, ohne den Anbieter zu kontaktieren.
+    if ((honeypot.current?.value ?? '') !== '' || Date.now() - mountedAt.current < 1500) {
+      setStatus('done');
+      return;
+    }
     setError('');
     setStatus('sending');
     track('newsletter_signup');
     try {
-      const res = await fetch('/api/newsletter', {
+      const res = await fetch(newsletterSignupUrl(), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          email: email.trim(),
-          consent,
-          website: honeypot.current?.value ?? '',
-          elapsedMs: Date.now() - mountedAt.current,
-          source: 'newsletter',
-          pagePath: typeof window !== 'undefined' ? window.location.pathname : '',
-        }),
+        body: JSON.stringify({ source_key: NEWSLETTER_API.sourceKey, email: email.trim() }),
       });
-      if (!res.ok) throw new Error(`status ${res.status}`);
-      setStatus('done');
+      const data = (await res.json().catch(() => ({}))) as { status?: number; msg?: string };
+      if (data.status === 1) {
+        setStatus('done');
+      } else {
+        setError(
+          data.msg === 'invalid email'
+            ? 'Diese E-Mail-Adresse wurde abgelehnt, bitte prüfen.'
+            : '',
+        );
+        setStatus('error');
+      }
     } catch {
       setStatus('error');
     }
