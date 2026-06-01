@@ -19,8 +19,13 @@ Build grün (35 Seiten), Typecheck 0 Fehler, Pages Functions ende-zu-ende getest
   + 13 Artikel (8 neue B2B-Spokes + 5 überarbeitete), FAQ, Kontakt, Impressum, Datenschutz, 404.
 - 7-Schritte-Konfigurator: Auto-Advance, Inline-Validierung, Honeypot + Zeit-Trap, dataLayer-Hooks,
   Danke-State; POST → `/functions/api/lead.ts`.
-- Pages Functions: lead, newsletter (DOI), kontakt (native form, 0 JS). Bot-Schutz + serverseitige
-  Validierung + KV-Rate-Limit + RGM-Forwarding (Stub-Modus ohne Secrets, sauber getestet).
+- Pages Functions: lead, newsletter (DOI), newsletter-confirm (DOI-Bestätigung), kontakt (native
+  form, 0 JS). Bot-Schutz + serverseitige Validierung + KV-Rate-Limit + RGM-Forwarding (Stub-Modus
+  ohne Secrets, sauber getestet).
+- DOI-Strecke vollständig: Anmelde-Island (`Newsletter.tsx`) → `/api/newsletter` (RGM, DOI-Mail) →
+  Bestätigungsseite `/newsletter/bestaetigen/` (Island `NewsletterConfirm.tsx`, liest Token aus URL)
+  → `/api/newsletter-confirm` (RGM). Seite ist noindex + aus Sitemap gefiltert. dataLayer:
+  `newsletter_signup`, `newsletter_signup_confirmed`.
 - Consent Mode v2 (default denied), Consent-Banner + Re-Open via Footer, GTM nur bei `PUBLIC_GTM_ID`.
 - SEO: Sitemap, robots.txt, Canonicals, OG/Twitter, Schema (Organization/WebSite/Brand/BreadcrumbList/
   FAQPage/Article), interne Hub↔Spoke-Verlinkung.
@@ -31,7 +36,7 @@ Build grün (35 Seiten), Typecheck 0 Fehler, Pages Functions ende-zu-ende getest
   bewusst als Monogramm (Markenbezug, keine Stock-Wiederholung). Bildnachweis im Impressum.
 
 ### Env-Variablen (in Cloudflare Pages → Settings → Variables setzen)
-- `RGM_LEAD_URL`, `RGM_NEWSLETTER_URL`, `RGM_API_KEY`, `RGM_NEWSLETTER_LIST_ID`, optional `CONTACT_FORWARD_URL`
+- `RGM_LEAD_URL`, `RGM_NEWSLETTER_URL`, `RGM_NEWSLETTER_CONFIRM_URL`, `RGM_API_KEY`, `RGM_NEWSLETTER_LIST_ID`, optional `CONTACT_FORWARD_URL`
 - optional KV-Binding `RATE_LIMIT` (Namespace) für IP-Rate-Limit
 - Build-Zeit: `PUBLIC_GTM_ID` (z. B. GTM-XXXXXX) — ohne ID kein Tracking/GTM
 

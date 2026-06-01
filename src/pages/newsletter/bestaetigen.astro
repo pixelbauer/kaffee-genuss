@@ -1,0 +1,15 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import NewsletterConfirm from '@/components/NewsletterConfirm.tsx';
+
+// Ziel des Bestätigungslinks aus der Double-Opt-In-Mail. System-Seite: noindex und
+// aus der Sitemap ausgeschlossen (siehe astro.config.mjs).
+---
+
+<BaseLayout
+  title="Newsletter-Anmeldung bestätigen"
+  description="Bestätigen Sie Ihre Newsletter-Anmeldung über den Link aus unserer E-Mail."
+  noindex={true}
+>
+  <NewsletterConfirm client:load />
+</BaseLayout>

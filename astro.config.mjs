@@ -15,6 +15,8 @@ export default defineConfig({
       i18n: undefined,
       changefreq: 'monthly',
       priority: 0.7,
+      // System-/Post-Submit-Seiten nicht indexieren (DOI-Bestätigung).
+      filter: (page) => !page.includes('/newsletter/bestaetigen'),
     }),
   ],
   image: {

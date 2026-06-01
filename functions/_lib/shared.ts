@@ -5,6 +5,7 @@ export interface Env {
   // RGM / GreenArrow – serverseitige Secrets (in Cloudflare Pages → Settings → Variables).
   RGM_LEAD_URL?: string;
   RGM_NEWSLETTER_URL?: string;
+  RGM_NEWSLETTER_CONFIRM_URL?: string;
   RGM_API_KEY?: string;
   RGM_NEWSLETTER_LIST_ID?: string;
   // Empfänger für Kontaktnachrichten (optional, falls über RGM/Transactional versendet)
@@ -115,5 +116,54 @@ export async function forwardToRgm(url: string | undefined, apiKey: string | und
   } catch (err) {
     console.error('[RGM] Forwarding fehlgeschlagen', err);
     return false;
+  }
+}
+
+/**
+ * Schließt den Double-Opt-In bei RGM/GreenArrow ab (Bestätigungslink aus der DOI-Mail).
+ * Anders als forwardToRgm wird die Upstream-Antwort ausgewertet, damit die
+ * Bestätigungsseite zwischen "neu bestätigt", "schon bestätigt" und "Link ungültig"
+ * unterscheiden kann. Ohne Konfiguration (lokal/Preview): Stub-Erfolg, damit der
+ * Flow ende-zu-ende testbar bleibt.
+ */
+export type ConfirmResult =
+  | { ok: true; alreadyConfirmed: boolean }
+  | { ok: false; reason: 'invalid' | 'upstream' };
+
+export async function confirmWithRgm(
+  url: string | undefined,
+  apiKey: string | undefined,
+  token: string,
+): Promise<ConfirmResult> {
+  if (!url) {
+    console.warn('[RGM] kein Confirm-Endpoint konfiguriert - Bestätigung wird gestubbt.');
+    console.log('[RGM] confirm token:', token);
+    return { ok: true, alreadyConfirmed: false };
+  }
+  try {
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        ...(apiKey ? { Authorization: `Bearer ${apiKey}` } : {}),
+      },
+      body: JSON.stringify({ type: 'newsletter_confirm', token }),
+    });
+    // 404/410/422 → Token unbekannt, abgelaufen oder bereits verbraucht.
+    if (res.status === 404 || res.status === 410 || res.status === 422) {
+      return { ok: false, reason: 'invalid' };
+    }
+    if (!res.ok) {
+      console.error('[RGM] Confirm-Upstream-Fehler', res.status, await res.text().catch(() => ''));
+      return { ok: false, reason: 'upstream' };
+    }
+    const data = (await res.json().catch(() => ({}))) as {
+      already_confirmed?: boolean;
+      alreadyConfirmed?: boolean;
+    };
+    return { ok: true, alreadyConfirmed: !!(data.already_confirmed ?? data.alreadyConfirmed) };
+  } catch (err) {
+    console.error('[RGM] Confirm fehlgeschlagen', err);
+    return { ok: false, reason: 'upstream' };
   }
 }

@@ -1,0 +1,91 @@
+.nlc {
+  max-width: 38rem;
+  margin: 0 auto;
+  text-align: center;
+  padding: 32px 24px 40px;
+  background: var(--milch);
+  border: 1px solid var(--roest-100);
+  border-radius: var(--radius-lg);
+}
+
+.nlc-icon {
+  width: 56px;
+  height: 56px;
+  margin: 0 auto 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--sahne);
+  color: var(--roest-300);
+}
+.nlc-icon svg { width: 30px; height: 30px; }
+
+.nlc-ok .nlc-icon {
+  background: color-mix(in srgb, var(--success) 14%, var(--milch));
+  color: var(--success);
+}
+.nlc-err .nlc-icon {
+  background: color-mix(in srgb, var(--error) 12%, var(--milch));
+  color: var(--error);
+}
+
+.nlc-eyebrow {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+  color: var(--roest-300);
+  margin: 0 0 8px;
+}
+.nlc-title {
+  font-family: var(--font-head);
+  font-size: clamp(1.4rem, 4vw, 1.9rem);
+  color: var(--espresso);
+  margin: 0 0 12px;
+}
+.nlc-text {
+  color: var(--roest-700);
+  font-size: 0.98rem;
+  line-height: 1.6;
+  margin: 0 auto;
+  max-width: 46ch;
+}
+
+.nlc-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 24px;
+}
+.nlc-btn {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 11px 24px;
+  background: var(--signal);
+  color: #fff;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-decoration: none;
+  border-radius: var(--radius-pill);
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+.nlc-btn:hover { background: var(--signal-700); transform: translateY(-1px); }
+.nlc-btn-ghost {
+  background: transparent;
+  color: var(--signal-700);
+  border: 1.5px solid var(--roest-100);
+}
+.nlc-btn-ghost:hover { background: var(--sahne); color: var(--signal-700); }
+
+.nlc-spin { animation: nlc-spin 0.9s linear infinite; transform-origin: center; }
+@keyframes nlc-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .nlc-spin { animation: none; }
+}
