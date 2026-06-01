@@ -1,7 +1,7 @@
 # CLAUDE.md — Kaffee-Genuss.net
 
 > Arbeitsanweisung für Claude in diesem Repo. Kurz halten, an Konventionen halten.
-> Begleitdokumente: `PLAN.md` (Architektur & Phasen), `DESIGN.md` (Design-System), `MEMORY.md` (Projektstatus).
+> Begleitdokumente: `PLAN.md` (Architektur & Phasen), `DESIGN.md` (Design-System), `CONTENT-PLAN.md` (Content-Inventur & Redaktion), `MEMORY.md` (Projektstatus).
 
 ---
 
@@ -14,8 +14,8 @@ Relaunch der Lead-Gen-Seite für Kaffeevollautomaten (Büro & Gastro, DACH) von 
 - **Astro 6** (`output: 'static'`), **Preact Islands** nur für Konfigurator / Newsletter / Consent
 - **Content Collections** (Markdown + Zod) — Content lebt im Git, kein CMS
 - **Tailwind** mit Kaffee-Tokens (siehe DESIGN.md), keine generischen Grays
-- **Docker / Nginx / Traefik** (Deploy-Pattern wie familienreise-kreuzfahrt.de)
-- Form-Submits → schlanker Server-Endpoint → RGM/GreenArrow (Secrets serverseitig)
+- **Cloudflare Pages** (Hosting). Astro bleibt reines SSG.
+- Form-Submits → **Cloudflare Pages Function** (`/functions`) → RGM/GreenArrow (Secrets serverseitig)
 
 ## Konventionen
 
@@ -37,10 +37,10 @@ Relaunch der Lead-Gen-Seite für Kaffeevollautomaten (Büro & Gastro, DACH) von 
 ## Verzeichnis (Soll)
 
 ```
+functions/      lead.ts, newsletter.ts   (Cloudflare Pages Functions → RGM)
 src/
   pages/        index, beratung, modelle, faq, kontakt, impressum, datenschutz
     hersteller/[slug].astro   wissenswertes/[slug].astro
-    api/        lead.ts, newsletter.ts   (Proxy zu RGM)
   content/      hersteller/*.md, wissenswertes/*.md, faq.md + config.ts (Zod)
   components/   Configurator.tsx, Newsletter.tsx, Consent.tsx (Islands)
   layouts/  styles/
@@ -57,14 +57,14 @@ public/         Bilder optimiert (AVIF/WebP)
 
 ## Nicht tun
 
-- Kein WordPress, kein CMS, keine Server-Runtime für Content
+- Kein WordPress, kein CMS, keine Server-Runtime für Content (Pages Functions nur für Form-Submits)
 - Keine Secrets/API-Keys im Client oder Repo
 - Keine Fremd-Bilder hotlinken (von `kaffeevollautomat-mieten.de` lokalisieren)
 - Keine generischen Tailwind-Grays, keine runden Pill-Radien
 
 ## Offene Punkte (Stand: siehe MEMORY.md)
 
-- RGM-Lead-Endpoint + Payload-Schema + Auth
-- Newsletter-Listen-ID + Double-Opt-In-Flow
-- `www`-URL-Struktur 1:1 erhalten?
-- Content-Inventur Hersteller/Modelle (was bleibt, was raus)
+- RGM-Lead-Endpoint + Payload-Schema + Auth (*Tim kümmert sich*)
+- Newsletter-Listen-ID + Double-Opt-In-Flow (*Tim kümmert sich*)
+
+Geklärt: `www` wird aufgenommen (Routing via Cloudflare Pages + DNS, Bestands-URLs 1:1 spiegeln) · Content-Inventur abgeschlossen (siehe CONTENT-PLAN.md).

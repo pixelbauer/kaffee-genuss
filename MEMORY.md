@@ -27,6 +27,7 @@
 - `DESIGN.md` — Design-System (Tokens, Typo, Komponenten, Wizard-UX, A11y)
 - `design-card.html` — Key-Visual-Übersicht (v2 kantig, abgenommen)
 - `CLAUDE.md` — Repo-Arbeitsanweisung
+- `CONTENT-PLAN.md` — Content-Inventur & Redaktionsfahrplan (B2B-Fokus)
 
 ## Ist-Zustand der Altseite (Analyse)
 
@@ -46,11 +47,11 @@
 
 ## Offen / Blockiert (Input nötig)
 
-- [ ] **RGM-Lead-Endpoint**: URL, Payload-Schema, Auth (API-Key-Header?) — *blockiert Wizard-Submit*
-- [ ] **Newsletter**: Listen-ID + Double-Opt-In-Flow in RGM
-- [ ] **URL-Struktur**: `www` beibehalten? Bestands-URLs spiegeln vs. 301-Map
-- [ ] **Content-Inventur**: welche Hersteller/Modelle bleiben, welche raus
-- [ ] Hosting-Ziel / Domain-Cutover-Plan (alte WP wann abschalten)
+- [x] **URL-Struktur**: `www` wird aufgenommen (Anfragen müssen angenommen werden) — Handling via Cloudflare Pages + DNS
+- [x] **Hosting-Ziel**: Cloudflare Pages. Form-Proxy → **Pages Functions** (`/functions`), nicht Astro-Endpoint/PHP. Astro bleibt reines SSG.
+- [ ] **RGM-Lead-Endpoint**: URL, Payload-Schema, Auth — *Tim kümmert sich*
+- [ ] **Newsletter**: Listen-ID + Double-Opt-In-Flow — *Tim kümmert sich*
+- [x] **Content-Inventur**: abgeschlossen → `CONTENT-PLAN.md`
 
 ## Nächste Schritte (geplant)
 
