@@ -1,0 +1,8 @@
+# Beispiel für lokale Pages-Functions-Secrets (kopieren nach .dev.vars, NICHT committen).
+# Ohne diese Werte laufen die Functions im Stub-Modus (loggen statt senden).
+
+RGM_LEAD_URL=
+RGM_NEWSLETTER_URL=
+RGM_API_KEY=
+RGM_NEWSLETTER_LIST_ID=
+CONTACT_FORWARD_URL=

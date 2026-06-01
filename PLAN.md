@@ -26,9 +26,9 @@
 - **Astro 6** (SSG, `output: 'static'`)
 - **Preact Islands** — nur für: Konfigurator-Wizard, Newsletter-Form, Consent-Banner
 - **Content Collections** (Markdown + Zod-Schema) für Hersteller, Modelle, Wissenswertes, FAQ
-- **Tailwind CSS** (kaffee-eigene Design-Tokens, keine generischen Grays)
-- **Docker / Nginx / Traefik** (Deploy-Pattern wie familienreise-kreuzfahrt.de)
-- **Form-Proxy:** schlanker Endpoint (Astro Server Endpoint im Hybrid-Mode *oder* separater PHP/Symfony-Microservice), der Lead/Newsletter an RGM/GreenArrow weiterreicht — Secrets serverseitig, nie im Client.
+- **Tailwind CSS** (kaffee-eigene Design-Tokens, keine generischen Grays) — umgesetzt via Tailwind 4 / PostCSS
+- **Cloudflare Pages** (Hosting, reines SSG) — ersetzt das ursprünglich angedachte Docker/Nginx/Traefik-Pattern
+- **Form-Proxy:** **Cloudflare Pages Functions** (`/functions/api/*`), die Lead/Newsletter/Kontakt an RGM/GreenArrow weiterreichen — Secrets serverseitig, nie im Client.
 
 ---
 
@@ -127,9 +127,10 @@ kaffee-genuss/
 │  ├─ content/          (hersteller/*.md, wissenswertes/*.md, faq.md) + config.ts (Zod)
 │  ├─ components/       (islands: Configurator.tsx, Newsletter.tsx, Consent.tsx)
 │  ├─ layouts/  styles/ (tokens)
-├─ public/  (images optimiert)
-├─ Dockerfile  nginx.conf  traefik labels
-├─ astro.config.mjs  tailwind.config.cjs
+│  ├─ assets/img/        (lokale, lizenzfreie Bilder → astro:assets WebP)
+├─ functions/api/        (lead.ts, newsletter.ts, kontakt.ts — Pages Functions → RGM)
+├─ public/  (_headers, robots.txt, favicon, og)
+├─ astro.config.mjs  postcss.config.mjs
 └─ DESIGN.md  PLAN.md
 ```
 
@@ -137,19 +138,20 @@ kaffee-genuss/
 
 ## 9. Migrations- & Umsetzungs-Phasen
 
-1. **Setup** — Astro-Init, Tokens, Layout, Docker/Traefik, CI.
+1. **Setup** — Astro-Init, Tokens, Layout, Cloudflare-Pages-Build, CI.
 2. **Content-Migration** — WP-Inhalte → Markdown (Hersteller, Wissenswertes, FAQ), Bilder lokalisieren+optimieren, Texte E-E-A-T-Refresh.
 3. **Konfigurator** — Wizard-Island nachbauen, RGM-Mapping, Validierung/Bot-Schutz.
 4. **Compliance/Tracking** — Consent-Banner + Consent Mode v2 + GTM/GA4.
 5. **SEO** — Schema, Sitemap, Canonicals, 301-Map (falls URL-Änderungen), interne Links.
 6. **QA** — Lighthouse (CWV grün), Lead-End-to-End-Test in RGM, Consent-Gating prüfen.
-7. **Go-Live** — DNS/Traefik, alte WP abschalten, Search-Console-Reindex.
+7. **Go-Live** — Cloudflare-DNS (Apex→www), alte WP abschalten, Search-Console-Reindex.
 
 ---
 
 ## 10. Offene Punkte (Input nötig)
 
-- RGM/GreenArrow: genaues Lead-Endpoint + Payload-Schema + Auth (API-Key-Header?).
-- Newsletter-Liste-ID & Double-Opt-In-Flow in RGM.
-- URL-Struktur: `www` beibehalten? Bestehende Rankings → URLs 1:1 spiegeln.
-- Welche Hersteller/Modelle bleiben, welche raus (Content-Inventur).
+- RGM/GreenArrow: genaues Lead-Endpoint + Payload-Schema + Auth (API-Key-Header?). *(offen — Tim)*
+- Newsletter-Liste-ID & Double-Opt-In-Flow in RGM. *(offen — Tim)*
+- GTM-Container-ID + finale Abnahme der Datenschutzerklärung. *(offen)*
+- ~~URL-Struktur `www`~~ → geklärt (www kanonisch, Cloudflare + DNS, URLs 1:1 gespiegelt).
+- ~~Hersteller/Modelle-Inventur~~ → abgeschlossen (CONTENT-PLAN.md, 12 Hersteller).

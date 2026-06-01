@@ -1,0 +1,179 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Hero from '@/components/Hero.astro';
+import SectionHeading from '@/components/SectionHeading.astro';
+import TrustLogos from '@/components/TrustLogos.astro';
+import Newsletter from '@/components/Newsletter.tsx';
+import Configurator from '@/components/Configurator.tsx';
+import Card from '@/components/Card.astro';
+import { Image } from 'astro:assets';
+import { organizationSchema, webSiteSchema } from '@/lib/schema';
+import { IMG, wissenImage } from '@/lib/images';
+import { getCollection } from 'astro:content';
+
+const wissen = (await getCollection('wissenswertes'))
+  .sort((a, b) => a.data.order - b.data.order)
+  .slice(0, 3);
+---
+
+<BaseLayout
+  title="Kaffeevollautomaten für Büro & Gastro vergleichen"
+  description="Kaffeevollautomaten für Büro & Gastronomie kostenlos & unverbindlich vergleichen. Bis zu 3 passende Angebote in DE, AT und CH – in unter 60 Sekunden."
+  canonicalPath="/"
+  bleed
+  schema={[organizationSchema(), webSiteSchema()]}
+>
+  <Hero
+    eyebrow="Kostenlos & unverbindlich"
+    title="Kaffeevollautomaten für Büro & Gastro"
+    subline="In unter 60 Sekunden den Bedarf angeben – wir vergleichen bis zu 3 passende Anbieter für Sie. Für Büro, Gastronomie und Hotellerie in DE, AT & CH."
+    bg={IMG.heroGastro}
+  >
+    <div slot="aside">
+      <Configurator client:load />
+    </div>
+  </Hero>
+
+  <!-- Vorteile -->
+  <section class="container-page sec">
+    <SectionHeading eyebrow="Warum Kaffee-Genuss.net">
+      Der passende Vollautomat – ohne stundenlange Recherche
+    </SectionHeading>
+    <div class="benefits">
+      <article class="benefit">
+        <Image src={IMG.officeBreak} alt="Kolleginnen und Kollegen bei einer Kaffeepause am Vollautomaten im Büro" class="benefit-img" widths={[400, 600, 800]} sizes="(min-width: 760px) 560px, 92vw" loading="lazy" />
+        <h3>Kaffeevollautomaten bereichern jedes Büro</h3>
+        <p>
+          Frisch gebrühter Kaffee auf Knopfdruck steigert Wohlbefinden und Pausenkultur –
+          und ist ein sichtbarer Benefit fürs Team. Vom kompakten Bürogerät bis zur
+          Hochleistungsmaschine für die Kantine finden wir die passende Klasse.
+        </p>
+        <a href="/wissenswertes/mitarbeiterzufriedenheit-kaffee/" class="benefit-link">
+          Mehr zum Nutzen im Büro →
+        </a>
+      </article>
+      <article class="benefit">
+        <Image src={IMG.officeLaptop} alt="Arbeitsplatz mit Notizblock und Kaffee – Planung der Anschaffung" class="benefit-img" widths={[400, 600, 800]} sizes="(min-width: 760px) 560px, 92vw" loading="lazy" />
+        <h3>Kaufen, mieten oder leasen?</h3>
+        <p>
+          Nicht der Anschaffungspreis entscheidet, sondern die Gesamtkosten über die
+          Laufzeit. Wir vergleichen Modelle und Anbieter, damit Sie die wirtschaftlichste
+          Lösung für Ihren Bedarf wählen können.
+        </p>
+        <a href="/wissenswertes/kaffeevollautomat-buero-kaufen-mieten-leasen/" class="benefit-link">
+          Kostenmodelle im Vergleich →
+        </a>
+      </article>
+    </div>
+  </section>
+
+  <!-- Trust -->
+  <section class="container-page sec">
+    <TrustLogos />
+  </section>
+
+  <!-- Ratgeber -->
+  <section class="container-page sec">
+    <SectionHeading eyebrow="Wissenswertes">Ratgeber für Ihre Entscheidung</SectionHeading>
+    <div class="grid-3">
+      {
+        wissen.map((w) => (
+          <Card
+            href={`/wissenswertes/${w.id}/`}
+            title={w.data.title}
+            teaser={w.data.lead}
+            eyebrow={w.data.category}
+            cta="Artikel lesen"
+            image={wissenImage(w.id, w.data.category)}
+            imageAlt=""
+          />
+        ))
+      }
+    </div>
+    <p class="sec-more"><a href="/wissenswertes/">Alle Ratgeber ansehen →</a></p>
+  </section>
+
+  <!-- Newsletter -->
+  <section class="nl-band">
+    <div class="container-page nl-band-grid">
+      <div>
+        <h2>Newsletter für Büro & Gastro</h2>
+        <p>
+          Praxistipps zu Auswahl, Kosten und Betrieb von Kaffeevollautomaten – kompakt
+          und ohne Werbeflut. Jederzeit abbestellbar.
+        </p>
+      </div>
+      <div class="nl-band-form">
+        <Newsletter variant="inline" client:visible />
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .sec { padding-top: 56px; }
+  .benefits {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 24px;
+    margin-top: 8px;
+  }
+  @media (min-width: 760px) {
+    .benefits { grid-template-columns: 1fr 1fr; gap: 32px; }
+  }
+  .benefit {
+    background: var(--sahne);
+    border: 1px solid var(--roest-100);
+    border-radius: var(--radius-lg);
+    padding: 26px;
+    box-shadow: var(--shadow-sm);
+  }
+  .benefit-img {
+    width: calc(100% + 52px);
+    margin: -26px -26px 18px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  }
+  .benefit h3 { font-size: 1.3rem; }
+  .benefit p { margin-top: 10px; color: var(--roest-700); }
+  .benefit-link {
+    display: inline-block;
+    margin-top: 14px;
+    color: var(--signal-700);
+    font-weight: 600;
+    font-size: 0.92rem;
+    text-decoration: none;
+  }
+  .benefit-link:hover { text-decoration: underline; }
+
+  .grid-3 {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+    margin-top: 8px;
+  }
+  @media (min-width: 640px) { .grid-3 { grid-template-columns: 1fr 1fr; } }
+  @media (min-width: 960px) { .grid-3 { grid-template-columns: 1fr 1fr 1fr; } }
+  .sec-more { margin-top: 22px; }
+  .sec-more a { color: var(--signal-700); font-weight: 600; text-decoration: none; }
+  .sec-more a:hover { text-decoration: underline; }
+
+  .nl-band {
+    margin-top: 72px;
+    background:
+      radial-gradient(600px 300px at 88% -30%, rgba(224, 138, 43, 0.22), transparent 60%),
+      linear-gradient(135deg, var(--espresso), #2a1810);
+    color: var(--milch);
+    padding: 48px 0;
+  }
+  .nl-band-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 28px;
+    align-items: center;
+  }
+  @media (min-width: 860px) { .nl-band-grid { grid-template-columns: 1fr 1fr; } }
+  .nl-band h2 { color: var(--milch); font-size: clamp(1.5rem, 1rem + 2vw, 2rem); }
+  .nl-band p { margin-top: 10px; color: rgba(247, 243, 236, 0.82); max-width: 46ch; }
+</style>

@@ -1,0 +1,162 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Breadcrumbs from '@/components/Breadcrumbs.astro';
+import SectionHeading from '@/components/SectionHeading.astro';
+import { COMPANY } from '@/lib/site';
+---
+
+<BaseLayout
+  title="Kontakt"
+  description="Fragen zum Angebotsvergleich für Kaffeevollautomaten? Schreiben Sie uns über das Kontaktformular oder per E-Mail – wir melden uns zeitnah."
+>
+  <Breadcrumbs items={[{ label: 'Kontakt' }]} />
+  <SectionHeading as="h1" eyebrow="Kontakt">Wir freuen uns auf Ihre Nachricht</SectionHeading>
+
+  <div class="contact">
+    <div class="contact-form-wrap">
+      <div id="sent-banner" class="banner" hidden>
+        Danke für Ihre Nachricht – wir melden uns zeitnah bei Ihnen.
+      </div>
+
+      <form class="cform" method="POST" action="/api/kontakt">
+        <div class="row2">
+          <div class="field">
+            <label for="anrede">Anrede</label>
+            <select id="anrede" name="anrede">
+              <option value="">Bitte wählen</option>
+              <option>Frau</option>
+              <option>Herr</option>
+              <option>Divers</option>
+              <option>keine Angabe</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="firma">Firma (optional)</label>
+            <input id="firma" name="firma" type="text" autocomplete="organization" />
+          </div>
+        </div>
+        <div class="field">
+          <label for="name">Name *</label>
+          <input id="name" name="name" type="text" required autocomplete="name" />
+        </div>
+        <div class="field">
+          <label for="email">E-Mail *</label>
+          <input id="email" name="email" type="email" required autocomplete="email" />
+        </div>
+        <div class="field">
+          <label for="nachricht">Nachricht *</label>
+          <textarea id="nachricht" name="nachricht" rows="6" required></textarea>
+        </div>
+
+        <!-- Honeypot -->
+        <div class="hp" aria-hidden="true">
+          <label>Website<input name="website" type="text" tabindex="-1" autocomplete="off" /></label>
+        </div>
+
+        <label class="consent">
+          <input type="checkbox" name="consent" required />
+          <span>Ich stimme der Verarbeitung meiner Angaben gemäß <a href="/datenschutz/">Datenschutzerklärung</a> zu.</span>
+        </label>
+
+        <button type="submit" class="submit">Nachricht senden</button>
+      </form>
+    </div>
+
+    <aside class="contact-side">
+      <h2>Direkt erreichen</h2>
+      <ul>
+        <li><span>E-Mail</span><a href={`mailto:${COMPANY.email}`}>{COMPANY.email}</a></li>
+      </ul>
+      <div class="side-cta">
+        <h3>Konkretes Angebot?</h3>
+        <p>Für passende Angebote nutzen Sie am besten direkt den Konfigurator.</p>
+        <a href="/beratung/" class="side-link">Angebote vergleichen →</a>
+      </div>
+    </aside>
+  </div>
+</BaseLayout>
+
+<script is:inline>
+  if (new URLSearchParams(location.search).get('sent') === '1') {
+    var b = document.getElementById('sent-banner');
+    if (b) { b.hidden = false; b.scrollIntoView({ block: 'center' }); }
+  }
+</script>
+
+<style>
+  .contact {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 36px;
+    margin-top: 24px;
+  }
+  @media (min-width: 880px) { .contact { grid-template-columns: 1.6fr 1fr; gap: 48px; } }
+
+  .banner {
+    background: color-mix(in srgb, var(--success) 12%, var(--milch));
+    border: 1px solid color-mix(in srgb, var(--success) 40%, transparent);
+    color: var(--success);
+    border-radius: var(--radius-md);
+    padding: 14px 16px;
+    margin-bottom: 18px;
+    font-weight: 500;
+  }
+
+  .cform { display: grid; gap: 16px; }
+  .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media (max-width: 520px) { .row2 { grid-template-columns: 1fr; } }
+  .field label { display: block; font-size: 0.85rem; font-weight: 500; color: var(--bohne); margin-bottom: 6px; }
+  .field input, .field select, .field textarea {
+    width: 100%;
+    padding: 12px 13px;
+    border: 1.5px solid var(--roest-100);
+    border-radius: var(--radius-md);
+    background: var(--sahne);
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    color: var(--espresso);
+  }
+  .field input:focus, .field select:focus, .field textarea:focus { border-color: var(--crema); outline: none; }
+  .field textarea { resize: vertical; }
+
+  .hp { position: absolute !important; left: -9999px !important; width: 1px; height: 1px; overflow: hidden; }
+
+  .consent { display: flex; gap: 10px; align-items: flex-start; font-size: 0.85rem; color: var(--roest-700); line-height: 1.5; }
+  .consent input { margin-top: 3px; width: 18px; height: 18px; flex: none; accent-color: var(--signal); }
+  .consent a { color: var(--signal-700); }
+
+  .submit {
+    justify-self: start;
+    background: var(--signal);
+    color: #fff;
+    border: 0;
+    font-weight: 600;
+    font-size: 1rem;
+    padding: 14px 30px;
+    border-radius: var(--radius-pill);
+    cursor: pointer;
+    font-family: var(--font-body);
+    min-height: 44px;
+    transition: background 0.15s ease, transform 0.15s ease;
+  }
+  .submit:hover { background: var(--signal-700); transform: translateY(-1px); }
+
+  .contact-side h2 { font-size: 1.3rem; }
+  .contact-side ul { list-style: none; padding: 0; margin: 16px 0 0; display: grid; gap: 14px; }
+  .contact-side li { display: flex; flex-direction: column; gap: 2px; }
+  .contact-side li span { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--roest-300); }
+  .contact-side a { color: var(--bohne); text-decoration: none; font-weight: 500; }
+  .contact-side a:hover { text-decoration: underline; }
+  .side-cta {
+    margin-top: 28px;
+    background: var(--milch);
+    border: 1px solid var(--roest-100);
+    border-left: 3px solid var(--signal);
+    border-radius: var(--radius-md);
+    padding: 20px;
+  }
+  .side-cta h3 { font-size: 1.1rem; }
+  .side-cta p { margin-top: 6px; color: var(--roest-700); font-size: 0.92rem; }
+  .side-link { display: inline-block; margin-top: 12px; color: var(--signal-700); font-weight: 600; text-decoration: none; }
+  .side-link:hover { text-decoration: underline; }
+</style>

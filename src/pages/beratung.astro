@@ -1,0 +1,122 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Breadcrumbs from '@/components/Breadcrumbs.astro';
+import SectionHeading from '@/components/SectionHeading.astro';
+import USPRow from '@/components/USPRow.astro';
+import TrustLogos from '@/components/TrustLogos.astro';
+import Configurator from '@/components/Configurator.tsx';
+
+const steps = [
+  { n: '1', t: 'Bedarf angeben', d: 'Geräteart, Einsatzort, Tassen pro Tag, Getränke und Region – in unter 60 Sekunden.' },
+  { n: '2', t: 'Anbieter vergleichen', d: 'Wir ermitteln passende Anbieter für Ihren Standort und Bedarf.' },
+  { n: '3', t: 'Angebote erhalten', d: 'Sie erhalten bis zu drei individuelle Angebote – kostenlos und unverbindlich.' },
+];
+---
+
+<BaseLayout
+  title="Beratung & kostenloser Angebotsvergleich"
+  description="Lassen Sie sich kostenlos und unverbindlich passende Kaffeevollautomaten für Büro & Gastro vorschlagen. So funktioniert der Angebotsvergleich in 3 Schritten."
+>
+  <Breadcrumbs items={[{ label: 'Beratung' }]} />
+
+  <div class="lp-head">
+    <div class="lp-copy">
+      <SectionHeading as="h1" eyebrow="Kostenlos & unverbindlich">
+        Den passenden Kaffeevollautomaten finden
+      </SectionHeading>
+      <p class="lp-lead">
+        Ob Büro, Praxis, Gastronomie oder Hotellerie: Geben Sie Ihren Bedarf an und
+        erhalten Sie bis zu drei passende Angebote – ohne selbst Anbieter recherchieren
+        zu müssen.
+      </p>
+      <div class="lp-usp"><USPRow /></div>
+
+      <ol class="lp-steps">
+        {steps.map((s) => (
+          <li>
+            <span class="lp-num">{s.n}</span>
+            <div>
+              <strong>{s.t}</strong>
+              <p>{s.d}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+
+    <div class="lp-form" id="konfigurator">
+      <Configurator client:load />
+    </div>
+  </div>
+
+  <section class="sec">
+    <TrustLogos />
+  </section>
+
+  <section class="sec lp-trust">
+    <SectionHeading eyebrow="Warum vergleichen">Ein Bedarf, mehrere Angebote</SectionHeading>
+    <div class="lp-trust-grid">
+      <div class="lp-trust-card">
+        <h3>Zeit sparen</h3>
+        <p>Statt einzeln bei Anbietern anzufragen, geben Sie Ihren Bedarf einmal an.</p>
+      </div>
+      <div class="lp-trust-card">
+        <h3>Echte Vergleichbarkeit</h3>
+        <p>Mehrere Angebote für denselben Bedarf machen Leistungen und Kosten transparent.</p>
+      </div>
+      <div class="lp-trust-card">
+        <h3>Unverbindlich</h3>
+        <p>Sie entscheiden in Ruhe, ob und mit wem Sie ins Gespräch kommen.</p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .lp-head {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 36px;
+    margin-top: 18px;
+    align-items: start;
+  }
+  @media (min-width: 980px) {
+    .lp-head { grid-template-columns: 1fr minmax(420px, 480px); gap: 48px; }
+  }
+  .lp-lead { margin-top: 14px; font-size: 1.15rem; color: var(--roest-700); max-width: 50ch; }
+  .lp-usp { margin-top: 20px; }
+
+  .lp-steps { list-style: none; padding: 0; margin: 28px 0 0; display: grid; gap: 18px; }
+  .lp-steps li { display: flex; gap: 14px; align-items: flex-start; }
+  .lp-num {
+    flex: none;
+    width: 34px;
+    height: 34px;
+    border-radius: 2px;
+    background: var(--signal);
+    color: #fff;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-head);
+  }
+  .lp-steps strong { font-family: var(--font-head); font-size: 1.05rem; }
+  .lp-steps p { color: var(--roest-700); font-size: 0.95rem; margin-top: 2px; }
+
+  .lp-form { position: sticky; top: 84px; }
+  @media (max-width: 979px) { .lp-form { position: static; } }
+
+  .sec { margin-top: 56px; }
+  .lp-trust-grid { display: grid; grid-template-columns: 1fr; gap: 18px; margin-top: 8px; }
+  @media (min-width: 760px) { .lp-trust-grid { grid-template-columns: repeat(3, 1fr); } }
+  .lp-trust-card {
+    background: var(--sahne);
+    border: 1px solid var(--roest-100);
+    border-radius: var(--radius-md);
+    padding: 22px;
+    box-shadow: var(--shadow-sm);
+  }
+  .lp-trust-card h3 { font-size: 1.1rem; }
+  .lp-trust-card p { margin-top: 8px; color: var(--roest-700); font-size: 0.95rem; }
+</style>

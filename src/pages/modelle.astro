@@ -1,0 +1,110 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Breadcrumbs from '@/components/Breadcrumbs.astro';
+import SectionHeading from '@/components/SectionHeading.astro';
+import CTABox from '@/components/CTABox.astro';
+
+const klassen = [
+  {
+    name: 'Kompakt fürs Büro',
+    tassen: 'bis ~50 Tassen/Tag',
+    text: 'Schlanke Geräte für Teeküchen und kleinere Teams. Einfache Bedienung, geringer Platzbedarf, ideal als Einstieg.',
+    bsp: 'Semi-professionell – z. B. Jura, Siemens, De’Longhi',
+    links: [{ l: 'Jura', h: '/hersteller/jura/' }, { l: 'Siemens', h: '/hersteller/siemens/' }, { l: 'De’Longhi', h: '/hersteller/delonghi/' }],
+  },
+  {
+    name: 'Gewerbe-Einstieg',
+    tassen: '50–100 Tassen/Tag',
+    text: 'Für stärker frequentierte Büroetagen und Praxen. Größere Behälter, oft mit Festwasseranschluss und Milchsystem.',
+    bsp: 'Professional-Linien – z. B. Melitta, Saeco, WMF',
+    links: [{ l: 'Melitta', h: '/hersteller/melitta/' }, { l: 'Saeco', h: '/hersteller/saeco/' }, { l: 'WMF', h: '/hersteller/wmf/' }],
+  },
+  {
+    name: 'Gewerbe',
+    tassen: '100–150 Tassen/Tag',
+    text: 'Kantine, kleineres Hotel, Tagungsbereich. Hohe Durchsatzleistung, wartungsarme Milchsysteme, robuste Technik.',
+    bsp: 'Vollgewerbe – z. B. WMF, Melitta Professional',
+    links: [{ l: 'WMF', h: '/hersteller/wmf/' }, { l: 'Kaffee Partner', h: '/hersteller/kaffee-partner/' }],
+  },
+  {
+    name: 'Hochleistung / Gastro',
+    tassen: 'über 150 Tassen/Tag',
+    text: 'Gastronomie, Hotellerie, hohe Spitzenlast. Festwasser, großer Vorrat – teils Siebträger für Barista-Qualität.',
+    bsp: 'Gastro – z. B. WMF, Faema (Siebträger)',
+    links: [{ l: 'WMF', h: '/hersteller/wmf/' }, { l: 'Faema', h: '/hersteller/faema/' }],
+  },
+];
+---
+
+<BaseLayout
+  title="Modelle & Geräteklassen von Kaffeevollautomaten"
+  description="Welche Geräteklasse passt zu welchem Bedarf? Modellklassen von Kaffeevollautomaten für Büro & Gastro – nach Tassen pro Tag erklärt."
+>
+  <Breadcrumbs items={[{ label: 'Modelle' }]} />
+  <SectionHeading as="h1" eyebrow="Geräteklassen">Modelle nach Bedarf statt Datenblatt</SectionHeading>
+  <p class="intro">
+    Statt einzelner Datenblätter ordnen wir Vollautomaten nach <strong>Geräteklassen</strong> –
+    so finden Sie schneller, was zu Ihrem Tagesbedarf passt. Welche Marke jeweils infrage
+    kommt, sehen Sie bei den <a href="/hersteller/">Herstellern</a>. Die passende Klasse
+    ermittelt der <a href="/beratung/">Konfigurator</a> automatisch.
+  </p>
+
+  <div class="klassen">
+    {
+      klassen.map((k) => (
+        <article class="klasse">
+          <div class="klasse-head">
+            <h2>{k.name}</h2>
+            <span class="badge">{k.tassen}</span>
+          </div>
+          <p>{k.text}</p>
+          <p class="bsp">{k.bsp}</p>
+          <div class="klasse-links">
+            {k.links.map((lnk) => <a href={lnk.h}>{lnk.l} →</a>)}
+          </div>
+        </article>
+      ))
+    }
+  </div>
+
+  <p class="hint">
+    Mehr zur Auswahl: <a href="/wissenswertes/vollautomat-groesse-tassen-pro-tag/">Vollautomat-Größe nach Tassen pro Tag</a>
+    und <a href="/wissenswertes/vollautomat-vs-siebtraeger-vs-kapsel/">Vollautomat vs. Siebträger vs. Kapsel</a>.
+  </p>
+
+  <div class="cta-wrap"><CTABox /></div>
+</BaseLayout>
+
+<style>
+  .intro { margin-top: 4px; max-width: 68ch; color: var(--roest-700); font-size: 1.0625rem; }
+  .intro a, .hint a { color: var(--signal-700); }
+  .klassen { display: grid; grid-template-columns: 1fr; gap: 20px; margin-top: 28px; }
+  @media (min-width: 720px) { .klassen { grid-template-columns: 1fr 1fr; } }
+  .klasse {
+    background: var(--sahne);
+    border: 1px solid var(--roest-100);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    flex-direction: column;
+  }
+  .klasse-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+  .klasse-head h2 { font-size: 1.3rem; }
+  .badge {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #fff;
+    background: var(--signal);
+    padding: 5px 11px;
+    border-radius: var(--radius-pill);
+    white-space: nowrap;
+  }
+  .klasse p { margin-top: 10px; color: var(--roest-700); }
+  .klasse .bsp { font-size: 0.88rem; color: var(--bohne); font-weight: 500; }
+  .klasse-links { margin-top: 14px; display: flex; flex-wrap: wrap; gap: 14px; }
+  .klasse-links a { color: var(--signal-700); font-weight: 600; font-size: 0.9rem; text-decoration: none; }
+  .klasse-links a:hover { text-decoration: underline; }
+  .hint { margin-top: 28px; color: var(--roest-700); }
+  .cta-wrap { margin-top: 40px; }
+</style>

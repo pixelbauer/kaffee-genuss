@@ -1,0 +1,80 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Breadcrumbs from '@/components/Breadcrumbs.astro';
+import SectionHeading from '@/components/SectionHeading.astro';
+import CTABox from '@/components/CTABox.astro';
+import { getCollection, render } from 'astro:content';
+import { faqPageSchema } from '@/lib/schema';
+
+const entries = (await getCollection('faq')).sort((a, b) => a.data.order - b.data.order);
+const rendered = await Promise.all(
+  entries.map(async (e) => ({ entry: e, Content: (await render(e)).Content })),
+);
+
+// Schema aus Frage + grob bereinigtem Antworttext (Markdown-Links → reiner Text).
+const plain = (md: string) =>
+  md.replace(/\[([^\]]+)\]\([^)]+\)/g, '$1').replace(/[*_>#`]/g, '').replace(/\s+/g, ' ').trim();
+const schema = [faqPageSchema(entries.map((e) => ({ question: e.data.question, answer: plain(e.body ?? '') })))];
+---
+
+<BaseLayout
+  title="Häufige Fragen (FAQ)"
+  description="Antworten auf häufige Fragen zum kostenlosen Angebotsvergleich für Kaffeevollautomaten: Ablauf, Kosten, Hersteller, Service und Datenschutz."
+  schema={schema}
+>
+  <Breadcrumbs items={[{ label: 'FAQ' }]} />
+
+  <SectionHeading as="h1" eyebrow="FAQ">Häufige Fragen</SectionHeading>
+  <p class="intro">Antworten rund um Ablauf, Kosten, Geräte und Datenschutz. Nichts dabei? <a href="/kontakt/">Schreiben Sie uns.</a></p>
+
+  <div class="faq">
+    {
+      rendered.map(({ entry, Content }) => (
+        <details class="faq-item">
+          <summary>
+            <span>{entry.data.question}</span>
+            <svg class="faq-chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <polyline points="6 9 12 15 18 9" />
+            </svg>
+          </summary>
+          <div class="faq-a prose"><Content /></div>
+        </details>
+      ))
+    }
+  </div>
+
+  <div class="cta-wrap">
+    <CTABox />
+  </div>
+</BaseLayout>
+
+<style>
+  .intro { margin-top: 4px; color: var(--roest-700); font-size: 1.0625rem; }
+  .intro a { color: var(--signal-700); }
+  .faq { display: grid; gap: 10px; margin-top: 24px; max-width: 820px; }
+  .faq-item {
+    background: var(--sahne);
+    border: 1px solid var(--roest-100);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+  }
+  .faq-item summary {
+    list-style: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 16px 18px;
+    font-family: var(--font-head);
+    font-weight: 600;
+    font-size: 1.05rem;
+    color: var(--espresso);
+  }
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-chev { color: var(--bohne); flex: none; transition: transform 0.2s ease; }
+  .faq-item[open] .faq-chev { transform: rotate(180deg); }
+  .faq-a { padding: 4px 18px 18px; font-size: 1rem; }
+  .faq-item[open] summary { border-bottom: 1px solid var(--roest-100); }
+  .cta-wrap { margin-top: 48px; }
+</style>

@@ -1,0 +1,58 @@
+---
+// Trust-Reihe der Hersteller (DESIGN.md §5). Da keine Fremd-Logos hotgelinkt
+// werden, dezente Wortmarken als Chips – muted → Akzent bei Hover.
+const brands = [
+  { name: 'WMF', slug: 'wmf' },
+  { name: 'Jura', slug: 'jura' },
+  { name: 'Melitta', slug: 'melitta' },
+  { name: 'Siemens', slug: 'siemens' },
+  { name: 'Saeco', slug: 'saeco' },
+  { name: 'Miele', slug: 'miele' },
+  { name: 'DeLonghi', slug: 'delonghi' },
+  { name: 'Faema', slug: 'faema' },
+];
+---
+
+<section class="trust" aria-label="Hersteller im Vergleich">
+  <p class="trust-label">Hersteller im Vergleich</p>
+  <ul class="trust-logos">
+    {
+      brands.map((b) => (
+        <li>
+          <a href={`/hersteller/${b.slug}/`}>{b.name}</a>
+        </li>
+      ))
+    }
+  </ul>
+</section>
+
+<style>
+  .trust { text-align: center; }
+  .trust-label {
+    font-size: 0.78rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--roest-300);
+    margin-bottom: 16px;
+  }
+  .trust-logos {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 12px 28px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .trust-logos a {
+    font-family: var(--font-head);
+    font-weight: 600;
+    font-size: 1.2rem;
+    color: var(--roest-300);
+    text-decoration: none;
+    letter-spacing: 0.01em;
+    transition: color 0.18s ease;
+  }
+  .trust-logos a:hover { color: var(--bohne); }
+</style>

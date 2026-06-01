@@ -1,0 +1,120 @@
+---
+import { NAV_MAIN, NAV_LEGAL, SITE, COMPANY } from '@/lib/site';
+const year = 2026; // Build-Jahr (kein Date.now zur Laufzeit nötig)
+---
+
+<footer class="site-footer">
+  <div class="container-page footer-grid">
+    <div class="footer-brand">
+      <span class="footer-logo">Kaffee-Genuss<span>.net</span></span>
+      <p class="footer-claim">
+        Kaffeevollautomaten für Büro & Gastronomie – kostenlos & unverbindlich passende
+        Anbieter vergleichen. DE · AT · CH.
+      </p>
+    </div>
+
+    <nav aria-label="Seiten" class="footer-col">
+      <h2>Seiten</h2>
+      <ul>
+        {NAV_MAIN.map((i) => <li><a href={i.href}>{i.label}</a></li>)}
+      </ul>
+    </nav>
+
+    <nav aria-label="Rechtliches" class="footer-col">
+      <h2>Rechtliches</h2>
+      <ul>
+        {NAV_LEGAL.map((i) => <li><a href={i.href}>{i.label}</a></li>)}
+      </ul>
+    </nav>
+
+    <div class="footer-col">
+      <h2>Kontakt</h2>
+      <ul>
+        <li><a href={`mailto:${COMPANY.email}`}>{COMPANY.email}</a></li>
+        <li><a href="/kontakt/">Kontaktformular</a></li>
+        <li><a href="/beratung/">Beratung &amp; Angebote</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="container-page footer-bottom">
+    <span>&copy; {year} {SITE.name}</span>
+    <span class="footer-legal-inline">
+      {NAV_LEGAL.map((i) => <a href={i.href}>{i.label}</a>)}
+      <button type="button" id="open-consent" class="footer-consent-btn">Cookie-Einstellungen</button>
+    </span>
+  </div>
+</footer>
+
+<script is:inline>
+  document.getElementById('open-consent')?.addEventListener('click', function () {
+    window.dispatchEvent(new CustomEvent('kg:open-consent'));
+  });
+</script>
+
+<style>
+  .site-footer {
+    background: var(--espresso);
+    color: rgba(247, 243, 236, 0.78);
+    margin-top: 64px;
+  }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 32px;
+    padding-top: 48px;
+    padding-bottom: 32px;
+  }
+  @media (min-width: 720px) {
+    .footer-grid { grid-template-columns: 1.6fr 1fr 1fr 1fr; }
+  }
+  .footer-logo {
+    font-family: var(--font-head);
+    font-weight: 600;
+    font-size: 1.25rem;
+    color: var(--milch);
+  }
+  .footer-logo span { color: var(--crema); }
+  .footer-claim { margin-top: 12px; max-width: 42ch; font-size: 0.9rem; line-height: 1.6; }
+
+  .footer-col h2 {
+    color: var(--crema);
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-family: var(--font-body);
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+  .footer-col ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; }
+  .footer-col a {
+    color: rgba(247, 243, 236, 0.78);
+    text-decoration: none;
+    font-size: 0.92rem;
+  }
+  .footer-col a:hover { color: var(--milch); text-decoration: underline; }
+
+  .footer-bottom {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 12px;
+    padding-top: 20px;
+    padding-bottom: 24px;
+    border-top: 1px solid rgba(247, 243, 236, 0.12);
+    font-size: 0.82rem;
+  }
+  .footer-legal-inline { display: flex; gap: 16px; }
+  .footer-legal-inline a { color: rgba(247, 243, 236, 0.7); text-decoration: none; }
+  .footer-legal-inline a:hover { color: var(--milch); }
+  .footer-consent-btn {
+    background: none;
+    border: 0;
+    color: rgba(247, 243, 236, 0.7);
+    font: inherit;
+    font-size: 0.82rem;
+    cursor: pointer;
+    padding: 0;
+  }
+  .footer-consent-btn:hover { color: var(--milch); text-decoration: underline; }
+</style>

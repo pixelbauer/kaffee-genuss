@@ -1,0 +1,63 @@
+.nl { width: 100%; }
+.nl-fields { display: flex; gap: 10px; flex-wrap: wrap; }
+.nl-field { flex: 1; min-width: 220px; }
+.nl-field input {
+  width: 100%;
+  padding: 13px 14px;
+  border: 1.5px solid var(--roest-100);
+  border-radius: var(--radius-md);
+  background: var(--sahne);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: var(--espresso);
+}
+.nl-field input:focus { border-color: var(--crema); outline: none; }
+.nl-btn {
+  background: var(--signal);
+  color: #fff;
+  border: 0;
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 13px 26px;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  font-family: var(--font-body);
+  min-height: 44px;
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+.nl-btn:hover:not([disabled]) { background: var(--signal-700); transform: translateY(-1px); }
+.nl-btn[disabled] { opacity: 0.6; cursor: not-allowed; }
+
+.nl-consent {
+  display: flex;
+  gap: 9px;
+  align-items: flex-start;
+  margin-top: 12px;
+  font-size: 0.8rem;
+  color: var(--roest-700);
+  line-height: 1.5;
+}
+.nl-consent input { margin-top: 2px; width: 17px; height: 17px; flex: none; accent-color: var(--signal); }
+.nl-consent a { color: var(--signal-700); }
+
+.nl-err { color: var(--error); font-size: 0.82rem; margin-top: 8px; }
+
+.nl-vh {
+  position: absolute;
+  width: 1px; height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+.nl-hp { position: absolute !important; left: -9999px !important; width: 1px; height: 1px; overflow: hidden; }
+
+.nl-done { padding: 4px 0; }
+.nl-done strong { font-family: var(--font-head); font-size: 1.1rem; color: var(--espresso); }
+.nl-done p { margin-top: 6px; color: var(--roest-700); font-size: 0.92rem; }
+
+/* Inline-Variante auf dunklem Footer-Grund */
+.nl-inline .nl-field input { background: rgba(247,243,236,.95); border-color: transparent; }
+.nl-inline .nl-consent { color: rgba(247,243,236,.78); }
+.nl-inline .nl-consent a { color: var(--crema); }
+.nl-inline .nl-done strong { color: var(--milch); }
+.nl-inline .nl-done p { color: rgba(247,243,236,.78); }

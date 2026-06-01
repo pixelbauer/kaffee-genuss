@@ -1,0 +1,32 @@
+---
+interface Props { as?: 'h2' | 'h3'; eyebrow?: string; class?: string }
+const { as = 'h2', eyebrow, class: cls = '' } = Astro.props;
+const Tag = as;
+---
+
+<div class={`section-heading ${cls}`}>
+  {eyebrow && <span class="eyebrow">{eyebrow}</span>}
+  <Tag class="title"><slot /></Tag>
+</div>
+
+<style>
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.78rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--bohne);
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  .eyebrow::before {
+    content: '';
+    width: 22px;
+    height: 3px;
+    border-radius: 2px;
+    background: var(--signal);
+  }
+  .title { font-size: clamp(1.5rem, 1rem + 2.4vw, 2.25rem); }
+</style>

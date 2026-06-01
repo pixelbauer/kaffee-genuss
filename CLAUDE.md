@@ -64,7 +64,9 @@ public/         Bilder optimiert (AVIF/WebP)
 
 ## Offene Punkte (Stand: siehe MEMORY.md)
 
-- RGM-Lead-Endpoint + Payload-Schema + Auth (*Tim kümmert sich*)
+- RGM-Lead-Endpoint + Payload-Schema + Auth (*Tim kümmert sich*) — Functions laufen bis dahin im Stub-Modus
 - Newsletter-Listen-ID + Double-Opt-In-Flow (*Tim kümmert sich*)
+- GTM-Container-ID (`PUBLIC_GTM_ID`) hinterlegen; Datenschutz final abnehmen
+- Go-Live: Cloudflare-Projekt + Secrets/KV, DNS (Apex→www), URL-Abgleich/301, Lighthouse, RGM-E2E
 
-Geklärt: `www` wird aufgenommen (Routing via Cloudflare Pages + DNS, Bestands-URLs 1:1 spiegeln) · Content-Inventur abgeschlossen (siehe CONTENT-PLAN.md).
+Geklärt: `www` wird aufgenommen (Routing via Cloudflare Pages + DNS, Bestands-URLs 1:1 spiegeln) · Content-Inventur abgeschlossen (siehe CONTENT-PLAN.md) · Astro-Implementierung steht (Build grün, 35 Seiten) · Impressumsdaten von Live-Seite übernommen · Bilder lizenzfrei (Pexels) lokalisiert.

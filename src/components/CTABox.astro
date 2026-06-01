@@ -1,0 +1,43 @@
+---
+// Kontextuelle CTA-Box „Passenden Automaten finden" (DESIGN.md §7).
+import Button from '@/components/Button.astro';
+interface Props {
+  title?: string;
+  text?: string;
+  cta?: string;
+  href?: string;
+}
+const {
+  title = 'Passenden Kaffeevollautomaten finden',
+  text = 'In unter 60 Sekunden den Bedarf angeben – wir vergleichen kostenlos & unverbindlich bis zu 3 passende Anbieter für Sie.',
+  cta = 'Jetzt Angebote vergleichen',
+  href = '/beratung/',
+} = Astro.props;
+---
+
+<aside class="cta-box">
+  <div>
+    <h2>{title}</h2>
+    <p>{text}</p>
+  </div>
+  <Button href={href} variant="primary" size="lg">{cta}</Button>
+</aside>
+
+<style>
+  .cta-box {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    background:
+      radial-gradient(500px 220px at 90% -30%, rgba(224, 138, 43, 0.18), transparent 60%),
+      var(--milch);
+    border: 1px solid var(--roest-100);
+    border-left: 3px solid var(--signal);
+    border-radius: var(--radius-lg);
+    padding: 28px 28px;
+  }
+  .cta-box h2 { font-size: 1.3rem; }
+  .cta-box p { margin-top: 8px; color: var(--roest-700); max-width: 52ch; font-size: 0.98rem; }
+</style>

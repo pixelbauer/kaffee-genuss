@@ -1,0 +1,54 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Breadcrumbs from '@/components/Breadcrumbs.astro';
+import SectionHeading from '@/components/SectionHeading.astro';
+import Card from '@/components/Card.astro';
+import CTABox from '@/components/CTABox.astro';
+import { wissenImage } from '@/lib/images';
+import { getCollection } from 'astro:content';
+
+const all = (await getCollection('wissenswertes')).sort((a, b) => a.data.order - b.data.order);
+---
+
+<BaseLayout
+  title="Wissenswertes rund um Kaffeevollautomaten fürs Gewerbe"
+  description="Ratgeber zu Kaffeevollautomaten für Büro & Gastronomie: Kosten, Leasing, Dimensionierung, Hygiene und mehr – fundiert und lead-nah aufbereitet."
+>
+  <Breadcrumbs items={[{ label: 'Wissenswertes' }]} />
+
+  <SectionHeading as="h1" eyebrow="Ratgeber & Wissen">
+    Wissenswertes rund um Kaffeevollautomaten
+  </SectionHeading>
+  <p class="intro">
+    Von der Kostenfrage über die richtige Gerätegröße bis zu Hygiene und Steuer: Hier
+    finden Sie fundierte Ratgeber für die Entscheidung im Büro- und Gastro-Einsatz.
+  </p>
+
+  <div class="grid">
+    {
+      all.map((w) => (
+        <Card
+          href={`/wissenswertes/${w.id}/`}
+          title={w.data.title}
+          teaser={w.data.lead}
+          eyebrow={w.data.category}
+          cta="Artikel lesen"
+          image={wissenImage(w.id, w.data.category)}
+          imageAlt=""
+        />
+      ))
+    }
+  </div>
+
+  <div class="cta-wrap">
+    <CTABox />
+  </div>
+</BaseLayout>
+
+<style>
+  .intro { margin-top: 4px; max-width: 68ch; color: var(--roest-700); font-size: 1.0625rem; }
+  .grid { display: grid; grid-template-columns: 1fr; gap: 20px; margin-top: 28px; }
+  @media (min-width: 560px) { .grid { grid-template-columns: 1fr 1fr; } }
+  @media (min-width: 900px) { .grid { grid-template-columns: repeat(3, 1fr); } }
+  .cta-wrap { margin-top: 48px; }
+</style>

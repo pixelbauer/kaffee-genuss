@@ -1,0 +1,129 @@
+---
+import USPRow from '@/components/USPRow.astro';
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+interface Props {
+  eyebrow?: string;
+  title: string;
+  subline?: string;
+  showUsp?: boolean;
+  bg?: ImageMetadata;
+}
+const { eyebrow, title, subline, showUsp = true, bg } = Astro.props;
+---
+
+<section class="hero">
+  {bg && (
+    <Image
+      src={bg}
+      alt=""
+      class="hero-bg"
+      widths={[768, 1280, 1920]}
+      sizes="100vw"
+      loading="eager"
+      fetchpriority="high"
+    />
+  )}
+  <div class="container-page hero-grid">
+    <div class="hero-copy">
+      {eyebrow && <span class="hero-eyebrow">{eyebrow}</span>}
+      <h1>{title}</h1>
+      {subline && <p class="hero-sub">{subline}</p>}
+      {showUsp && (
+        <div class="hero-usp">
+          <USPRow />
+        </div>
+      )}
+      <slot name="copy-extra" />
+    </div>
+
+    <div class="hero-aside">
+      <slot name="aside" />
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    background:
+      radial-gradient(700px 360px at 88% -20%, rgba(224, 138, 43, 0.28), transparent 60%),
+      radial-gradient(600px 400px at -10% 120%, rgba(111, 78, 55, 0.35), transparent 55%),
+      linear-gradient(135deg, var(--espresso), #2a1810);
+    color: var(--milch);
+    overflow: hidden;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background-image: radial-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+    background-size: 16px 16px;
+    pointer-events: none;
+  }
+  /* Hintergrundfoto (unterste Ebene) + Espresso-Overlay für Textkontrast (WCAG AA) */
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background:
+      radial-gradient(700px 360px at 88% -20%, rgba(224, 138, 43, 0.22), transparent 60%),
+      linear-gradient(100deg, rgba(43, 24, 16, 0.92) 0%, rgba(59, 36, 23, 0.82) 45%, rgba(59, 36, 23, 0.55) 100%);
+  }
+  .hero-grid {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 36px;
+    padding-top: 56px;
+    padding-bottom: 56px;
+    align-items: center;
+  }
+  .hero-eyebrow {
+    display: inline-block;
+    font-size: 0.78rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--crema);
+    font-weight: 600;
+    margin-bottom: 14px;
+  }
+  .hero-copy h1 {
+    color: var(--milch);
+    font-size: clamp(2rem, 1.2rem + 3.5vw, 3.25rem);
+    line-height: 1.1;
+  }
+  .hero-sub {
+    margin-top: 16px;
+    font-size: clamp(1.1rem, 1rem + 0.6vw, 1.25rem);
+    color: rgba(247, 243, 236, 0.82);
+    max-width: 46ch;
+  }
+  .hero-usp { margin-top: 24px; }
+  /* USP-Badges auf dunklem Grund lesbar machen */
+  .hero-usp :global(.badge) {
+    background: rgba(247, 243, 236, 0.08);
+    border-color: rgba(200, 162, 106, 0.4);
+    color: var(--milch);
+  }
+
+  @media (min-width: 980px) {
+    .hero-grid {
+      grid-template-columns: 1fr minmax(420px, 480px);
+      gap: 48px;
+      padding-top: 72px;
+      padding-bottom: 72px;
+    }
+  }
+</style>

@@ -1,0 +1,65 @@
+.cc {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 60;
+  padding: 14px;
+  pointer-events: none;
+}
+.cc-panel {
+  pointer-events: auto;
+  max-width: var(--container-page);
+  margin: 0 auto;
+  background: var(--sahne);
+  border: 1px solid var(--roest-100);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.cc-text strong { font-family: var(--font-head); font-size: 1.05rem; color: var(--espresso); }
+.cc-text p { margin-top: 6px; font-size: 0.88rem; color: var(--roest-700); max-width: 70ch; line-height: 1.55; }
+.cc-text a { color: var(--signal-700); }
+
+.cc-toggles { margin-top: 14px; display: grid; gap: 10px; }
+.cc-toggle {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  font-size: 0.85rem;
+  color: var(--roest-700);
+  background: var(--milch);
+  border: 1px solid var(--roest-100);
+  border-radius: var(--radius-md);
+  padding: 10px 12px;
+}
+.cc-toggle input { margin-top: 2px; width: 18px; height: 18px; flex: none; accent-color: var(--signal); }
+.cc-toggle b { color: var(--espresso); }
+.cc-fixed { opacity: 0.85; }
+
+.cc-actions { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+.cc-btn {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.9rem;
+  border-radius: var(--radius-pill);
+  padding: 11px 22px;
+  cursor: pointer;
+  border: 0;
+  min-height: 44px;
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+.cc-primary { background: var(--signal); color: #fff; }
+.cc-primary:hover { background: var(--signal-700); transform: translateY(-1px); }
+.cc-secondary { background: transparent; color: var(--bohne); border: 1.5px solid var(--bohne); }
+.cc-secondary:hover { background: var(--roest-100); }
+.cc-ghost { background: transparent; color: var(--bohne); margin-left: auto; }
+.cc-ghost:hover { text-decoration: underline; }
+
+@media (min-width: 760px) {
+  .cc-panel { flex-direction: row; align-items: center; justify-content: space-between; }
+  .cc-actions { flex: none; }
+}

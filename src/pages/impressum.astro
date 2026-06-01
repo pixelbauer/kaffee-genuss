@@ -1,0 +1,86 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Breadcrumbs from '@/components/Breadcrumbs.astro';
+import { COMPANY } from '@/lib/site';
+---
+
+<BaseLayout title="Impressum" description="Impressum und Anbieterkennzeichnung von Kaffee-Genuss.net.">
+  <Breadcrumbs items={[{ label: 'Impressum' }]} />
+  <article class="prose legal">
+    <h1>Impressum</h1>
+
+    <h2>Angaben gemäß § 5 DDG (Digitale-Dienste-Gesetz)</h2>
+    <p>
+      {COMPANY.legalName}<br />
+      {COMPANY.street}<br />
+      {COMPANY.zip} {COMPANY.city}<br />
+      {COMPANY.country}
+    </p>
+
+    <h2>Vertreten durch</h2>
+    <p>Geschäftsführer: {COMPANY.managingDirector}</p>
+
+    <h2>Kontakt</h2>
+    <p>
+      E-Mail: <a href={`mailto:${COMPANY.email}`}>{COMPANY.email}</a><br />
+      Kontaktformular: <a href="/kontakt/">kaffee-genuss.net/kontakt</a>
+    </p>
+
+    <h2>Registereintrag</h2>
+    <p>
+      Eintragung im Handelsregister.<br />
+      Registergericht: {COMPANY.registerCourt}<br />
+      Registernummer: {COMPANY.register}
+    </p>
+
+    <h2>Steuerangaben</h2>
+    <p>
+      Steuernummer: {COMPANY.taxNumber}<br />
+      Umsatzsteuer-Identifikationsnummer gemäß § 27a UStG: {COMPANY.vatId}
+    </p>
+
+    <h2>Verantwortlich i.S.d. § 18 Abs. 2 MStV</h2>
+    <p>{COMPANY.managingDirector}, Anschrift wie oben.</p>
+
+    <h2>Bildnachweise</h2>
+    <p>Verwendete Bildquellen: <a href="https://stocksnap.io/" rel="noopener nofollow" target="_blank">stocksnap.io</a> und <a href="https://www.pexels.com/" rel="noopener nofollow" target="_blank">pexels.com</a>.</p>
+
+    <h2>Haftung für Inhalte</h2>
+    <p>
+      Als Diensteanbieter sind wir für eigene Inhalte auf diesen Seiten nach den
+      allgemeinen Gesetzen verantwortlich. Wir sind jedoch nicht verpflichtet, übermittelte
+      oder gespeicherte fremde Informationen zu überwachen oder nach Umständen zu forschen,
+      die auf eine rechtswidrige Tätigkeit hinweisen.
+    </p>
+
+    <h2>Haftung für Links</h2>
+    <p>
+      Unser Angebot enthält Links zu externen Websites Dritter, auf deren Inhalte wir keinen
+      Einfluss haben. Für die Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter
+      oder Betreiber verantwortlich.
+    </p>
+
+    <h2>Urheberrecht</h2>
+    <p>
+      Die durch die Seitenbetreiber erstellten Inhalte und Werke auf diesen Seiten unterliegen
+      dem deutschen Urheberrecht. Beiträge Dritter sind als solche gekennzeichnet.
+    </p>
+
+    <p class="seealso">Siehe auch unsere <a href="/datenschutz/">Datenschutzerklärung</a>.</p>
+  </article>
+</BaseLayout>
+
+<style>
+  .legal { max-width: 820px; margin-inline: auto; }
+  .legal h1 { font-size: clamp(1.8rem, 1.2rem + 2.5vw, 2.6rem); }
+  .note {
+    background: var(--milch);
+    border: 1px solid var(--roest-100);
+    border-left: 3px solid var(--crema);
+    padding: 12px 14px;
+    border-radius: var(--radius-md);
+    font-size: 0.9rem;
+    color: var(--bohne);
+  }
+  .seealso { margin-top: 28px; }
+</style>

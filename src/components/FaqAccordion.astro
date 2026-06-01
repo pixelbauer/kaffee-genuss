@@ -1,0 +1,51 @@
+---
+// Akkordeon ohne JS (details/summary). FAQPage-Schema wird auf der Seite gesetzt.
+interface Item { q: string; a: string }
+interface Props { items: Item[] }
+const { items } = Astro.props;
+---
+
+<div class="faq">
+  {
+    items.map((item) => (
+      <details class="faq-item">
+        <summary>
+          <span>{item.q}</span>
+          <svg class="faq-chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <polyline points="6 9 12 15 18 9" />
+          </svg>
+        </summary>
+        <div class="faq-a"><p>{item.a}</p></div>
+      </details>
+    ))
+  }
+</div>
+
+<style>
+  .faq { display: grid; gap: 10px; }
+  .faq-item {
+    background: var(--sahne);
+    border: 1px solid var(--roest-100);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+  }
+  .faq-item summary {
+    list-style: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 16px 18px;
+    font-family: var(--font-head);
+    font-weight: 600;
+    font-size: 1.05rem;
+    color: var(--espresso);
+  }
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-chev { color: var(--bohne); flex: none; transition: transform 0.2s ease; }
+  .faq-item[open] .faq-chev { transform: rotate(180deg); }
+  .faq-a { padding: 0 18px 18px; }
+  .faq-a p { color: var(--roest-700); max-width: 68ch; }
+  .faq-item[open] summary { border-bottom: 1px solid var(--roest-100); }
+</style>

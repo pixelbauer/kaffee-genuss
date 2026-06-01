@@ -1,0 +1,185 @@
+@import "tailwindcss";
+
+/* Selbstgehostete Fonts (DSGVO: kein Google-Fonts-IP-Transfer) werden als ESM
+   im BaseLayout importiert, damit Vite die woff2-Assets korrekt bündelt. */
+
+/* ── Design-Tokens (DESIGN.md §2/§3/§4) ─────────────────────────────
+   In @theme definiert → erzeugt Tailwind-Utilities (bg-signal, text-espresso,
+   font-head, rounded-md …) UND CSS-Variablen (--color-espresso …). */
+@theme {
+  /* Brand */
+  --color-espresso: #3b2417;
+  --color-bohne: #6f4e37;
+  --color-crema: #c8a26a;
+  --color-signal: #e08a2b;
+  --color-signal-700: #c2731c;
+
+  /* Neutral – warm getönt, KEINE kalten Grays */
+  --color-milch: #f7f3ec;
+  --color-sahne: #ffffff;
+  --color-roest-100: #ede6db;
+  --color-roest-300: #c9bba7;
+  --color-roest-700: #5a4b3a;
+
+  /* Feedback */
+  --color-success: #4f7a3f;
+  --color-error: #b23a2e;
+  --color-focus: #e08a2b;
+
+  /* Typografie */
+  --font-head: "Fraunces Variable", Georgia, serif;
+  --font-body: "Inter Variable", system-ui, sans-serif;
+
+  /* Radien – bewusst kantig (2/3px) */
+  --radius-sm: 2px;
+  --radius-md: 2px;
+  --radius-lg: 3px;
+  --radius-pill: 2px;
+
+  /* Schatten */
+  --shadow-sm: 0 1px 2px rgba(59, 36, 23, 0.06);
+  --shadow-md: 0 6px 20px rgba(59, 36, 23, 0.1);
+  --shadow-lg: 0 16px 48px rgba(59, 36, 23, 0.14);
+
+  /* Container */
+  --container-page: 1180px;
+}
+
+/* Friendly Aliase, damit Komponenten-<style> var(--espresso) nutzen können */
+:root {
+  --espresso: var(--color-espresso);
+  --bohne: var(--color-bohne);
+  --crema: var(--color-crema);
+  --signal: var(--color-signal);
+  --signal-700: var(--color-signal-700);
+  --milch: var(--color-milch);
+  --sahne: var(--color-sahne);
+  --roest-100: var(--color-roest-100);
+  --roest-300: var(--color-roest-300);
+  --roest-700: var(--color-roest-700);
+  --success: var(--color-success);
+  --error: var(--color-error);
+  --focus: var(--color-focus);
+}
+
+/* ── Base ──────────────────────────────────────────────────────── */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    font-family: var(--font-body);
+    color: var(--color-espresso);
+    background-color: var(--color-milch);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-head);
+    font-weight: 600;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    color: var(--color-espresso);
+    text-wrap: balance;
+  }
+
+  p { text-wrap: pretty; }
+
+  a {
+    color: var(--color-bohne);
+    text-underline-offset: 3px;
+  }
+
+  /* Sichtbarer Fokus-Ring (A11y, DESIGN.md §10) */
+  :where(a, button, input, textarea, select, summary, [tabindex]):focus-visible {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  /* Bilder nie über Container hinaus */
+  img { max-width: 100%; height: auto; }
+
+  ::selection { background: var(--color-crema); color: var(--color-espresso); }
+}
+
+/* ── Reduced Motion (DESIGN.md §9) ─────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ── Wiederverwendbare Utilities ───────────────────────────────── */
+@layer components {
+  .container-page {
+    width: 100%;
+    max-width: var(--container-page);
+    margin-inline: auto;
+    padding-inline: 1rem;
+  }
+  @media (min-width: 768px) {
+    .container-page { padding-inline: 1.5rem; }
+  }
+
+  /* Skip-Link (A11y) */
+  .skip-link {
+    position: absolute;
+    left: -9999px;
+    top: 0;
+    z-index: 100;
+    background: var(--color-espresso);
+    color: var(--color-milch);
+    padding: 12px 20px;
+    border-radius: 2px;
+  }
+  .skip-link:focus {
+    left: 1rem;
+    top: 1rem;
+  }
+}
+
+/* ── Fließtext (Prosa für Content-Seiten, max 68ch DESIGN.md §3) ── */
+.prose {
+  max-width: 68ch;
+  font-size: 1.0625rem;
+  color: var(--color-roest-700);
+}
+.prose > * + * { margin-top: 1.1em; }
+.prose h2 {
+  font-size: clamp(1.5rem, 1rem + 2vw, 2.25rem);
+  margin-top: 1.8em;
+  color: var(--color-espresso);
+}
+.prose h3 {
+  font-size: clamp(1.25rem, 1rem + 1vw, 1.5rem);
+  margin-top: 1.4em;
+  color: var(--color-bohne);
+}
+.prose a { color: var(--color-signal-700); text-decoration: underline; }
+.prose a:hover { color: var(--color-signal); }
+.prose ul, .prose ol { padding-left: 1.4em; }
+.prose ul { list-style: disc; }
+.prose ol { list-style: decimal; }
+.prose li + li { margin-top: 0.4em; }
+.prose strong { color: var(--color-espresso); font-weight: 600; }
+.prose table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+.prose th, .prose td {
+  text-align: left;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--color-roest-100);
+}
+.prose th { color: var(--color-espresso); font-weight: 600; }
+.prose blockquote {
+  border-left: 3px solid var(--color-crema);
+  padding-left: 1rem;
+  color: var(--color-bohne);
+  font-style: italic;
+}

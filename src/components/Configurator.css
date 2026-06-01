@@ -1,0 +1,183 @@
+/* Konfigurator-Island (DESIGN.md §6). Klassen mit cfg- gekapselt. */
+.cfg {
+  background: var(--sahne);
+  border: 1px solid var(--roest-100);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  padding: 22px 22px 24px;
+  width: 100%;
+  text-align: left;
+  color: var(--espresso);
+}
+
+.cfg-progress {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 18px;
+}
+.cfg-progress i {
+  flex: 1;
+  height: 5px;
+  border-radius: 3px;
+  background: var(--roest-100);
+  transition: background 0.25s ease;
+}
+.cfg-progress i.on { background: var(--signal); }
+
+.cfg-stepno {
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: var(--signal);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.cfg-q {
+  font-family: var(--font-head);
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin: 6px 0 16px;
+  line-height: 1.2;
+}
+
+.cfg-choices {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.cfg-choice {
+  padding: 14px 12px;
+  text-align: center;
+  border-radius: var(--radius-md);
+  border: 1.5px solid var(--roest-100);
+  background: var(--milch);
+  font-size: 0.92rem;
+  font-weight: 500;
+  font-family: var(--font-body);
+  color: var(--espresso);
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
+  min-height: 52px;
+}
+.cfg-choice:hover { border-color: var(--crema); }
+.cfg-choice.sel { background: var(--signal); color: #fff; border-color: var(--signal); }
+.cfg-choice.multi.sel::after { content: ' ✓'; }
+
+.cfg-fields { display: grid; gap: 14px; }
+.cfg-row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@media (max-width: 480px) { .cfg-row2 { grid-template-columns: 1fr; } }
+
+.cfg-field label {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--bohne);
+  margin-bottom: 5px;
+}
+.cfg-field input,
+.cfg-field select {
+  width: 100%;
+  padding: 11px 12px;
+  border: 1.5px solid var(--roest-100);
+  border-radius: var(--radius-md);
+  background: var(--milch);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: var(--espresso);
+}
+.cfg-field input:focus,
+.cfg-field select:focus { border-color: var(--crema); outline: none; }
+.cfg-field.invalid input,
+.cfg-field.invalid select { border-color: var(--error); }
+.cfg-err { color: var(--error); font-size: 0.78rem; margin-top: 4px; }
+
+.cfg-consent {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  font-size: 0.82rem;
+  color: var(--roest-700);
+  line-height: 1.5;
+}
+.cfg-consent input { margin-top: 3px; width: 18px; height: 18px; flex: none; accent-color: var(--signal); }
+.cfg-consent a { color: var(--signal-700); }
+
+.cfg-foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+  gap: 12px;
+}
+.cfg-back {
+  background: none;
+  border: 0;
+  color: var(--bohne);
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 8px 4px;
+  font-family: var(--font-body);
+}
+.cfg-back:hover { text-decoration: underline; }
+.cfg-back[disabled] { opacity: 0; pointer-events: none; }
+.cfg-micro { font-size: 0.78rem; color: var(--roest-300); }
+
+.cfg-next {
+  background: var(--signal);
+  color: #fff;
+  border: 0;
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 12px 24px;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  font-family: var(--font-body);
+  min-height: 44px;
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+.cfg-next:hover:not([disabled]) { background: var(--signal-700); transform: translateY(-1px); }
+.cfg-next[disabled] { opacity: 0.6; cursor: not-allowed; }
+
+/* Honeypot – visuell & für AT versteckt, aber im DOM */
+.cfg-hp {
+  position: absolute !important;
+  left: -9999px !important;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+/* Danke- & Fehler-Screens */
+.cfg-done { text-align: center; padding: 14px 4px 8px; }
+.cfg-done .cfg-mark {
+  width: 56px;
+  height: 56px;
+  margin: 0 auto 16px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--success) 16%, transparent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--success);
+}
+.cfg-done h3 { font-size: 1.5rem; }
+.cfg-done p { margin-top: 10px; color: var(--roest-700); }
+
+.cfg-alert {
+  background: color-mix(in srgb, var(--error) 8%, var(--milch));
+  border: 1px solid color-mix(in srgb, var(--error) 35%, transparent);
+  color: var(--error);
+  padding: 10px 12px;
+  border-radius: var(--radius-md);
+  font-size: 0.85rem;
+  margin-bottom: 14px;
+}
+
+.cfg-fade { animation: cfgFade 0.18s ease; }
+@keyframes cfgFade {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cfg-fade { animation: none; }
+}

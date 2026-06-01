@@ -1,0 +1,33 @@
+---
+import { USPS } from '@/lib/site';
+interface Props { items?: readonly string[]; align?: 'start' | 'center' }
+const { items = USPS, align = 'start' } = Astro.props;
+---
+
+<ul class="usp" style={`justify-content:${align === 'center' ? 'center' : 'flex-start'}`}>
+  {items.map((u) => <li class="badge">{u}</li>)}
+</ul>
+
+<style>
+  .usp { display: flex; gap: 10px; flex-wrap: wrap; list-style: none; padding: 0; margin: 0; }
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 16px;
+    border-radius: var(--radius-pill);
+    background: var(--sahne);
+    border: 1px solid var(--roest-100);
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--bohne);
+  }
+  .badge::before {
+    content: '';
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--success);
+    flex: none;
+  }
+</style>
